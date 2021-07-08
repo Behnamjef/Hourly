@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -36,14 +37,15 @@ namespace Hourly.UI
             task.Title = _titleInputField.text;
             task.Note = _noteInputField.text;
             
-            _data.OnFinishClicked?.Invoke(task);
+            Prefs.AllReminderTasks = Prefs.AllReminderTasks.Append(task).ToList();
+            _data.OnTaskAdded?.Invoke(task);
             
             Close();
         }
 
         public class Data : IPopupData
         {
-            public Action<ReminderTask> OnFinishClicked;
+            public Action<ReminderTask> OnTaskAdded;
         }
     }
 }

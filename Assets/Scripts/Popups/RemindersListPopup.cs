@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
-namespace Hourly
+namespace Hourly.UI
 {
-    public class ReminderTasksList : CommonBehaviour
+    public class RemindersListPopup : Popup
     {
         [SerializeField] private ReminderTaskCell reminderTaskPrefab;
         private ScrollRect Scroll => GetCachedComponentInChildren<ScrollRect>();
@@ -13,11 +12,12 @@ namespace Hourly
         
         private List<ReminderTaskCell> _reminderTaskCells = new List<ReminderTaskCell>();
         
-        public void Init(List<ReminderTask> allTask)
+        public override void Init(IPopupData data)
         {
             ClearList();
             _reminderTaskCells = new List<ReminderTaskCell>();
-            
+
+            var allTask = (data as Data)?.AllTasks;
             if(allTask.IsNullOrEmpty()) 
                 return;
             
@@ -55,6 +55,11 @@ namespace Hourly
         public List<ReminderTaskCell> GetAllTaskCells()
         {
             return _reminderTaskCells;
+        }
+
+        public class Data : IPopupData
+        {
+            public List<ReminderTask> AllTasks;
         }
     }
 }

@@ -6,23 +6,18 @@ namespace Hourly
 {
     public class ReminderTaskCell : CommonBehaviour
     {
-        private TMP_InputField InputField => GetCachedComponentInChildren<TMP_InputField>();
+        private CustomText TitleText => GetCachedComponentInChildren<CustomText>();
         private ReminderTask _reminderTask;
         
         public void Init(ReminderTask reminder)
         {
-            InputField.text = reminder.Title;
+            TitleText.text = reminder.Title;
             _reminderTask = reminder;
-        }
-
-        public void Select()
-        {
-            InputField.Select();
         }
 
         public ReminderTask GetTask()
         {
-            _reminderTask.Title = InputField.text;
+            _reminderTask.Title = TitleText.text;
             return _reminderTask;
         }
     }

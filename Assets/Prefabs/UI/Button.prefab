@@ -60,15 +60,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.23137257, g: 0.47450984, b: 0.73333335, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -120,7 +120,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3201839741278793663}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Hourly.MainManager, Assembly-CSharp
+        m_MethodName: AddNewTask
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &8500975867692475022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -214,19 +226,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4918974753051828029, guid: 02c0439143bcb4af9a77e57fa8c14a0f, type: 3}
       propertyPath: m_text
-      value: "\u200BTest"
+      value: +
       objectReference: {fileID: 0}
     - target: {fileID: 4918974753051828029, guid: 02c0439143bcb4af9a77e57fa8c14a0f, type: 3}
       propertyPath: m_fontSize
-      value: 30
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918974753051828029, guid: 02c0439143bcb4af9a77e57fa8c14a0f, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918974753051828029, guid: 02c0439143bcb4af9a77e57fa8c14a0f, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918974753051828029, guid: 02c0439143bcb4af9a77e57fa8c14a0f, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4918974753051828029, guid: 02c0439143bcb4af9a77e57fa8c14a0f, type: 3}
       propertyPath: m_fontSizeBase
-      value: 30
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 4918974753051828029, guid: 02c0439143bcb4af9a77e57fa8c14a0f, type: 3}
       propertyPath: m_overflowMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4918974753051828029, guid: 02c0439143bcb4af9a77e57fa8c14a0f, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4918974753051828029, guid: 02c0439143bcb4af9a77e57fa8c14a0f, type: 3}
       propertyPath: m_enableWordWrapping

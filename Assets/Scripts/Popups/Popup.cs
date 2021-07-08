@@ -9,7 +9,7 @@ namespace Hourly.UI
             SetActive(true);
         }
         
-        public virtual void Init(IPopupData data)
+        public virtual void Init(IPopupData data = null)
         {
         }
         

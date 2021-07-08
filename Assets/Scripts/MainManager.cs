@@ -5,10 +5,10 @@ namespace Hourly
 {
     public class MainManager : SingletonBehaviour<MainManager>
     {
-        private ReminderTasksList ReminderTasksList => GetCachedComponentInChildren<ReminderTasksList>();
         
         // ToDo: Should be in the navigator class
         private Popup AddNewTaskPopup => GetCachedComponentInChildren<AddNewTaskPopup>();
+        private Popup RemindersListPopup => GetCachedComponentInChildren<RemindersListPopup>();
 
         private void Start()
         {
@@ -17,19 +17,21 @@ namespace Hourly
 
         private void Init()
         {
-            ReminderTasksList.Init(Prefs.AllReminderTasks);
-            AddNewTaskPopup.Init(new AddNewTaskPopup.Data{OnFinishClicked = AddNewTask});
+            RemindersListPopup.Init(new RemindersListPopup.Data{AllTasks = Prefs.AllReminderTasks});
+            AddNewTaskPopup.Init(new AddNewTaskPopup.Data{OnTaskAdded = OnTaskAdded});
         }
 
         public void ShowAddNewItemPopup()
         {
-            AddNewTaskPopup.SetActive(true);
+            RemindersListPopup.Close();
+            AddNewTaskPopup.Show();
         }
 
-        private void AddNewTask(ReminderTask task)
+        private void OnTaskAdded(ReminderTask task)
         {
-            Prefs.AllReminderTasks = Prefs.AllReminderTasks.Append(task).ToList();
-            ReminderTasksList.Init(Prefs.AllReminderTasks);
+            RemindersListPopup.Init(new RemindersListPopup.Data{AllTasks = Prefs.AllReminderTasks});
+            RemindersListPopup.Show();
+            AddNewTaskPopup.Close();
         }
     }
 }
