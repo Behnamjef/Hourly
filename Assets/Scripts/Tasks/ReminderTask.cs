@@ -1,16 +1,13 @@
-using Hourly.UI;
-using TMPro;
-using UnityEngine;
+using System;
 
 namespace Hourly
 {
-    public class ReminderTask : CommonBehaviour
+    public class ReminderTask
     {
-        private TMP_InputField InputField => GetCachedComponentInChildren<TMP_InputField>();
-
-        public void SetTitle(string text)
-        {
-            InputField.text = text;
-        }
+        public string Task;
+        public string Description;
+        public int GroupIndex;
+        public DateTime Time;
+        public bool IsDone;
     }
 }

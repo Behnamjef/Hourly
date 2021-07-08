@@ -523,9 +523,13 @@ MonoBehaviour:
     shown: 0
   - name: CommonBehaviour
     shown: 0
-  - name: ReminderTasksList
+  - name: SingletonBehaviour`1
     shown: 0
-  - name: ReminderTask
+  - name: MainManager
+    shown: 0
+  - name: ReminderTaskCell
+    shown: 0
+  - name: ReminderTasksList
     shown: 0
   - name: CustomText
     shown: 0
@@ -684,5 +688,7 @@ MonoBehaviour:
   - name: ExampleScript2
     shown: 0
   - name: ExampleScriptWithIcon
+    shown: 0
+  - name: DOTweenComponent
     shown: 0
   customComponents: []
