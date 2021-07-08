@@ -1,17 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace Hourly
 {
     public class ReminderTasksList : CommonBehaviour
     {
         [SerializeField] private ReminderTaskCell reminderTaskPrefab;
-        private VerticalLayoutGroup VerticalLayoutGroup => GetCachedComponentInChildren<VerticalLayoutGroup>();
-
+        private ScrollRect Scroll => GetCachedComponentInChildren<ScrollRect>();
+        private Transform Contents => Scroll.content;
+        
         private List<ReminderTaskCell> _reminderTaskCells = new List<ReminderTaskCell>();
         
-        public void Init(ReminderTask[] allTask)
+        public void Init(List<ReminderTask> allTask)
         {
             ClearList();
             _reminderTaskCells = new List<ReminderTaskCell>();
@@ -29,7 +31,7 @@ namespace Hourly
         {
             if(_reminderTaskCells.IsNullOrEmpty()) return;
 
-            for (int i = _reminderTaskCells.Count - 1; i <= 0; i--)
+            for (int i = _reminderTaskCells.Count - 1; i >= 0; i--)
             {
                 Destroy(_reminderTaskCells[i].gameObject);
             }
@@ -37,15 +39,14 @@ namespace Hourly
             _reminderTaskCells.Clear();
         }
 
-        public void AddNewTask()
+        public void AddNewTask(ReminderTask task)
         {
-            var cell = CreateTask(new ReminderTask());
-            cell.Select();
+            CreateTask(task);
         }
 
         private ReminderTaskCell CreateTask(ReminderTask task)
         {
-            var t = Instantiate(reminderTaskPrefab, VerticalLayoutGroup.transform);
+            var t = Instantiate(reminderTaskPrefab, Contents);
             t.Init(task);
             _reminderTaskCells.Add(t);
             return t;

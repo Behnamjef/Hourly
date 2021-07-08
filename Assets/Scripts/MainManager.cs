@@ -1,31 +1,35 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using Hourly.UI;
 
 namespace Hourly
 {
     public class MainManager : SingletonBehaviour<MainManager>
     {
         private ReminderTasksList ReminderTasksList => GetCachedComponentInChildren<ReminderTasksList>();
+        
+        // ToDo: Should be in the navigator class
+        private Popup AddNewTaskPopup => GetCachedComponentInChildren<AddNewTaskPopup>();
 
         private void Start()
         {
+            Init();
+        }
+
+        private void Init()
+        {
             ReminderTasksList.Init(Prefs.AllReminderTasks);
+            AddNewTaskPopup.Init(new AddNewTaskPopup.Data{OnFinishClicked = AddNewTask});
         }
 
-        private void OnGUI()
+        public void ShowAddNewItemPopup()
         {
-            if (GUI.Button(new Rect(0, 0, 100, 100), "Fill list"))
-            {
-                ReminderTasksList.Init(Prefs.AllReminderTasks);
-            }
+            AddNewTaskPopup.SetActive(true);
         }
 
-        public void AddNewTask()
+        private void AddNewTask(ReminderTask task)
         {
-            ReminderTasksList.AddNewTask();
-            Prefs.AllReminderTasks = ReminderTasksList.GetAllTaskCells().Select(t => t.GetTask()).ToArray();
+            Prefs.AllReminderTasks = Prefs.AllReminderTasks.Append(task).ToList();
+            ReminderTasksList.Init(Prefs.AllReminderTasks);
         }
     }
 }

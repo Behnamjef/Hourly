@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Hourly
 {
     public static class Prefs
     {
-        public static ReminderTask[] AllReminderTasks
+        public static List<ReminderTask> AllReminderTasks
         {
             set
             {
@@ -16,18 +17,17 @@ namespace Hourly
             get
             {
                 var json = PlayerPrefs.GetString("AllTasks");
-                ReminderTask[] list;
+                List<ReminderTask> list = new List<ReminderTask>();
                 try
                 {
-                    list = JsonConvert.DeserializeObject<ReminderTask[]>(json);
+                    list = JsonConvert.DeserializeObject<List<ReminderTask>>(json);
                 }
                 catch (Exception e)
                 {
-                    Logger.LogError("Cannot save tasks!\n" + e.Message);
-                    return null;
+                    Logger.LogError("Cannot get tasks!\n" + e.Message);
                 }
 
-                return list;
+                return list ?? new List<ReminderTask>();
             }
         }
     }

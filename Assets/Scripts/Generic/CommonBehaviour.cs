@@ -79,7 +79,7 @@ namespace Hourly
             return result;
         }
 
-        public T GetCachedComponentInChildren<T>(bool includeInactive = true) where T : Component
+        public T GetCachedComponentInChildren<T>(bool includeInactive = true) where T : class
         {
             return GetCachedComponentInChildren(typeof(T), includeInactive) as T;
         }

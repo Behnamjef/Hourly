@@ -11,7 +11,7 @@ namespace Hourly
         
         public void Init(ReminderTask reminder)
         {
-            InputField.text = reminder.Task;
+            InputField.text = reminder.Title;
             _reminderTask = reminder;
         }
 
@@ -22,7 +22,7 @@ namespace Hourly
 
         public ReminderTask GetTask()
         {
-            _reminderTask.Task = InputField.text;
+            _reminderTask.Title = InputField.text;
             return _reminderTask;
         }
     }
