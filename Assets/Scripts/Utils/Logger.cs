@@ -8,7 +8,7 @@ namespace Hourly
     {
         public static void Log(string log, LogColor color = LogColor.white)
         {
-            Debug.Log($"<color={color} {log}</color>");
+            Debug.Log($"<color={color}> {log}</color>");
         }
         
         public static void LogError(string log)

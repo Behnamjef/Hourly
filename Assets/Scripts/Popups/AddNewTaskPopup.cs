@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Hourly.Calendar;
 using TMPro;
 using UnityEngine;
 
@@ -9,9 +10,11 @@ namespace Hourly.UI
     {
         [SerializeField] private TMP_InputField _titleInputField;
         [SerializeField] private TMP_InputField _noteInputField;
-        
+
+        private CalendarHandler CalendarHandler => GetCachedComponentInChildren<CalendarHandler>();
+
         private Data _data;
-        
+
         public override void Init(IPopupData data)
         {
             base.Init(data);
@@ -36,11 +39,16 @@ namespace Hourly.UI
             var task = new ReminderTask();
             task.Title = _titleInputField.text;
             task.Note = _noteInputField.text;
-            
+
             Prefs.AllReminderTasks = Prefs.AllReminderTasks.Append(task).ToList();
             _data.OnTaskAdded?.Invoke(task);
-            
+
             Close();
+        }
+
+        public void ShowCalendar()
+        {
+            CalendarHandler.ShowCalendar(DateTime.Now);
         }
 
         public class Data : IPopupData
