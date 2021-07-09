@@ -7,7 +7,7 @@ namespace Hourly
         public string Title;
         public string Note;
         public int GroupIndex;
-        public DateTime Time;
+        public DateTime? Time;
         public bool IsDone;
     }
 }

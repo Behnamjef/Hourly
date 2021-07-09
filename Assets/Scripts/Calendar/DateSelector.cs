@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Hourly;
 using Hourly.UI;
+using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Hourly.Calendar
 {
-    public class CalendarHandler : CommonBehaviour
+    public class DateSelector : Popup
     {
         [SerializeField] private CustomText _yearText;
         [SerializeField] private CustomText _monthText;
@@ -17,10 +19,14 @@ namespace Hourly.Calendar
         private GridLayoutGroup _gridLayout => GetCachedComponentInChildren<GridLayoutGroup>();
         private CalendarDay _currentCalendarDay;
 
+        private TMP_InputField TimeInputField => GetCachedComponentInChildren<TMP_InputField>();
+
+        public Action<DateTime> OnDateSelected;
+        
         public void ShowCalendar(DateTime processDate)
         {
             _currentCalendarDay = new CalendarDay(processDate);
-            SetActive(true);
+            Show();
 
             SetTexts();
             FillCells();
@@ -30,13 +36,14 @@ namespace Hourly.Calendar
         {
             _yearText.text = _currentCalendarDay.Year.ToString();
             _monthText.text = _currentCalendarDay.MonthName;
+            TimeInputField.text = DateTime.Now.ToString("t");
         }
 
         private void FillCells()
         {
             CreateCells();
             var allDays = Calendar.GetCalendarDays(_currentCalendarDay);
-
+            
             var index = 0;
             foreach (var day in allDays)
             {
@@ -44,6 +51,7 @@ namespace Hourly.Calendar
                 var isToday = _currentCalendarDay.DayOfYear == day.DayOfYear;
                 var isThisMonth = _currentCalendarDay.Month == day.Month;
                 cell.Init(day, isToday, isThisMonth);
+                cell.OnNewDateSelected = OnNewDateSelected;
                 index++;
             }
         }
@@ -71,7 +79,7 @@ namespace Hourly.Calendar
         {
             ShowCalendar(_currentCalendarDay.DateTime.AddMonths(-1));
         }
-        
+
         public void ShowNextYear()
         {
             ShowCalendar(_currentCalendarDay.DateTime.AddYears(1));
@@ -81,5 +89,41 @@ namespace Hourly.Calendar
         {
             ShowCalendar(_currentCalendarDay.DateTime.AddYears(-1));
         }
+
+        private void OnNewDateSelected(CalendarDay calendarDay)
+        {
+            ShowCalendar(calendarDay.DateTime);
+        }
+
+        public void SaveTimeForTask()
+        {
+            if (DateTime.TryParse(TimeInputField.text, out var dateTime))
+            {
+                var reminderDate = new DateTime(_currentCalendarDay.Year, _currentCalendarDay.Month,
+                    _currentCalendarDay.Day, dateTime.Hour, dateTime.Minute,0);
+
+                OnDateSelected?.Invoke(reminderDate);
+                Close();
+                return;
+            }
+
+            TimeInputField.text = "Wrong time format!";
+            TimeInputField.Select();
+        }
     }
+#if UNITY_EDITOR
+    [CustomEditor(typeof(DateSelector))]
+    public class CalendarHandlerInspector : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            var calendar = target as DateSelector;
+            if (GUILayout.Button("Fill calendar"))
+            {
+                calendar.ShowCalendar(DateTime.Now);
+            }
+        }
+    }
+#endif
 }

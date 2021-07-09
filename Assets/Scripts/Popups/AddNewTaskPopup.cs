@@ -10,15 +10,34 @@ namespace Hourly.UI
     {
         [SerializeField] private TMP_InputField _titleInputField;
         [SerializeField] private TMP_InputField _noteInputField;
+        [SerializeField] private CustomText _reminderTimeText;
 
-        private CalendarHandler CalendarHandler => GetCachedComponentInChildren<CalendarHandler>();
+        private DateSelector DateSelector => GetCachedComponentInChildren<DateSelector>();
 
         private Data _data;
+
+        private ReminderTask _reminderTask;
 
         public override void Init(IPopupData data)
         {
             base.Init(data);
             _data = data as Data;
+            DateSelector.OnDateSelected = OnDateSelected;
+            _reminderTask = _data?.ReminderTask ?? new ReminderTask();
+            FillContent();
+        }
+
+        private void FillContent()
+        {
+            _titleInputField.text = _reminderTask.Title;
+            _noteInputField.text = _reminderTask.Note;
+            _reminderTimeText.text = _reminderTask.Time.ToString();
+        }
+
+        private void OnDateSelected(DateTime reminderDate)
+        {
+            _reminderTask.Time = reminderDate;
+            _reminderTimeText.text = reminderDate.ToString();
         }
 
         protected override void OnShow()
@@ -32,28 +51,29 @@ namespace Hourly.UI
             base.OnHide();
             _titleInputField.text = "";
             _noteInputField.text = "";
+            _reminderTimeText.text = "";
         }
 
         public void DoneEditing()
         {
-            var task = new ReminderTask();
-            task.Title = _titleInputField.text;
-            task.Note = _noteInputField.text;
+            _reminderTask.Title = _titleInputField.text;
+            _reminderTask.Note = _noteInputField.text;
 
-            Prefs.AllReminderTasks = Prefs.AllReminderTasks.Append(task).ToList();
-            _data.OnTaskAdded?.Invoke(task);
+            Prefs.AllReminderTasks = Prefs.AllReminderTasks.Append(_reminderTask).ToList();
+            _data.OnFinishClicked?.Invoke(_reminderTask);
 
             Close();
         }
 
         public void ShowCalendar()
         {
-            CalendarHandler.ShowCalendar(DateTime.Now);
+            DateSelector.ShowCalendar(DateTime.Now);
         }
 
         public class Data : IPopupData
         {
-            public Action<ReminderTask> OnTaskAdded;
+            public Action<ReminderTask> OnFinishClicked;
+            public ReminderTask ReminderTask;
         }
     }
 }

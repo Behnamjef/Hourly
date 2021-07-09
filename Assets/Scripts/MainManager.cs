@@ -18,7 +18,7 @@ namespace Hourly
         private void Init()
         {
             RemindersListPopup.Init(new RemindersListPopup.Data {AllTasks = Prefs.AllReminderTasks});
-            AddNewTaskPopup.Init(new AddNewTaskPopup.Data {OnTaskAdded = OnTaskAdded});
+            AddNewTaskPopup.Init(new AddNewTaskPopup.Data {OnFinishClicked = OnTaskAdded});
             RemindersListPopup.Show();
             AddNewTaskPopup.Close();
         }
@@ -27,6 +27,12 @@ namespace Hourly
         {
             RemindersListPopup.Close();
             AddNewTaskPopup.Show();
+        }
+
+        public void ShowAddNewItemPopup(ReminderTask reminderTask)
+        {
+            ShowAddNewItemPopup();
+            AddNewTaskPopup.Init(new AddNewTaskPopup.Data {OnFinishClicked = OnTaskAdded, ReminderTask = reminderTask});
         }
 
         private void OnTaskAdded(ReminderTask task)

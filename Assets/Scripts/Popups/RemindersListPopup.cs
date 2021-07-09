@@ -47,7 +47,7 @@ namespace Hourly.UI
         private ReminderTaskCell CreateTask(ReminderTask task)
         {
             var t = Instantiate(reminderTaskPrefab, Contents);
-            t.Init(task);
+            t.Init(task,rt => MainManager.Instance.ShowAddNewItemPopup(rt));
             _reminderTaskCells.Add(t);
             return t;
         }
