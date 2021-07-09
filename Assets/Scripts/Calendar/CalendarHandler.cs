@@ -15,32 +15,35 @@ namespace Hourly.Calendar
         [SerializeField] private CalendarDayCell _calendarDayCellPrefab;
         private List<CalendarDayCell> _calendarDayCells;
         private GridLayoutGroup _gridLayout => GetCachedComponentInChildren<GridLayoutGroup>();
+        private CalendarDay _currentCalendarDay;
 
         public void ShowCalendar(DateTime processDate)
         {
+            _currentCalendarDay = new CalendarDay(processDate);
             SetActive(true);
-            SetTexts(processDate);
-            FillCells(processDate);
+
+            SetTexts();
+            FillCells();
         }
 
-        private void SetTexts(DateTime processDate)
+        private void SetTexts()
         {
-            var calendarDay = new CalendarDay(processDate);
-            _yearText.text = calendarDay.Year.ToString();
-            _monthText.text = calendarDay.MonthName;
+            _yearText.text = _currentCalendarDay.Year.ToString();
+            _monthText.text = _currentCalendarDay.MonthName;
         }
 
-        private void FillCells(DateTime processDate)
+        private void FillCells()
         {
             CreateCells();
-            var allDays = Calendar.GetCalendarDays(processDate);
+            var allDays = Calendar.GetCalendarDays(_currentCalendarDay);
 
             var index = 0;
             foreach (var day in allDays)
             {
                 var cell = _calendarDayCells[index];
-                var isToday = processDate.DayOfYear == day.DayOfYear;
-                cell.Init(day, isToday);
+                var isToday = _currentCalendarDay.DayOfYear == day.DayOfYear;
+                var isThisMonth = _currentCalendarDay.Month == day.Month;
+                cell.Init(day, isToday, isThisMonth);
                 index++;
             }
         }
@@ -57,6 +60,26 @@ namespace Hourly.Calendar
             }
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(_gridLayout.GetComponent<RectTransform>());
+        }
+
+        public void ShowNextMonth()
+        {
+            ShowCalendar(_currentCalendarDay.DateTime.AddMonths(1));
+        }
+
+        public void ShowPreviousMonth()
+        {
+            ShowCalendar(_currentCalendarDay.DateTime.AddMonths(-1));
+        }
+        
+        public void ShowNextYear()
+        {
+            ShowCalendar(_currentCalendarDay.DateTime.AddYears(1));
+        }
+
+        public void ShowPreviousYear()
+        {
+            ShowCalendar(_currentCalendarDay.DateTime.AddYears(-1));
         }
     }
 }

@@ -4,17 +4,17 @@ namespace Hourly.Calendar
 {
     public class CalendarDay
     {
-        private DateTime _dateTime;
-        public int Day => _dateTime.Day;
-        public int Month => _dateTime.Month;
-        public int Year => _dateTime.Year;
-        public int DayOfYear => _dateTime.DayOfYear;
-        public DayOfWeek DayOfWeek => _dateTime.DayOfWeek;
-        public string MonthName => _dateTime.ToString("MMMM");
+        public DateTime DateTime { get; }
+        public int Day => DateTime.Day;
+        public int Month => DateTime.Month;
+        public int Year => DateTime.Year;
+        public int DayOfYear => DateTime.DayOfYear;
+        public DayOfWeek DayOfWeek => DateTime.DayOfWeek;
+        public string MonthName => DateTime.ToString("MMMM");
 
         public CalendarDay(DateTime dateTime)
         {
-            _dateTime = dateTime;
+            DateTime = dateTime;
         }
 
         public int GetDayOfWeekIndex()

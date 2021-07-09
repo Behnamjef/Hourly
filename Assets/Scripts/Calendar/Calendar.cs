@@ -7,10 +7,9 @@ namespace Hourly.Calendar
     {
         public const int CALENDAR_CAPACITY = 6 * 7;
 
-        public static List<CalendarDay> GetCalendarDays(DateTime processDate)
+        public static List<CalendarDay> GetCalendarDays(CalendarDay currentDay)
         {
-            var calendarDay = new CalendarDay(processDate);
-            var firstDayOfMonth = processDate.AddDays(-(calendarDay.Day - 1));
+            var firstDayOfMonth = currentDay.DateTime.AddDays(-(currentDay.Day - 1));
             var firstDayOfMonthCalendarDay = new CalendarDay(firstDayOfMonth);
             var firstDayOfWeekIndex = firstDayOfMonthCalendarDay.GetDayOfWeekIndex();
 

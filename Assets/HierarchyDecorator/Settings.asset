@@ -545,6 +545,12 @@ MonoBehaviour:
     shown: 0
   - name: PixelPerfectCamera
     shown: 0
+  - name: ExampleScript
+    shown: 0
+  - name: ExampleScript2
+    shown: 0
+  - name: ExampleScriptWithIcon
+    shown: 0
   - name: PlaymodeTestsController
     shown: 0
   - name: PlayModeRunnerCallback
@@ -687,17 +693,11 @@ MonoBehaviour:
     shown: 0
   - name: SpriteSkinManagerInternal
     shown: 0
+  - name: PlayerPrefsController
+    shown: 0
   - name: SpriteShapeGeometryCache
     shown: 0
   - name: SpriteShapeController
-    shown: 0
-  - name: ExampleScript
-    shown: 0
-  - name: ExampleScript2
-    shown: 0
-  - name: ExampleScriptWithIcon
-    shown: 0
-  - name: PlayerPrefsController
     shown: 0
   - name: DOTweenComponent
     shown: 0
