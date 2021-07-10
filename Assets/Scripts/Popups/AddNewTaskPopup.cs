@@ -58,8 +58,6 @@ namespace Hourly.UI
         {
             _reminderTask.Title = _titleInputField.text;
             _reminderTask.Note = _noteInputField.text;
-
-            Prefs.AllReminderTasks = Prefs.AllReminderTasks.Append(_reminderTask).ToList();
             _data.OnFinishClicked?.Invoke(_reminderTask);
 
             Close();

@@ -9,5 +9,6 @@ namespace Hourly
         public int GroupIndex;
         public DateTime? Time;
         public bool IsDone;
+        public int TaskIndex;
     }
 }

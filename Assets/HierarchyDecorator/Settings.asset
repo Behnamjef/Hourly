@@ -537,6 +537,8 @@ MonoBehaviour:
     shown: 0
   - name: CustomText
     shown: 0
+  - name: NotificationManager
+    shown: 0
   - name: CalendarDayCell
     shown: 0
   - name: DateSelector
@@ -698,6 +700,10 @@ MonoBehaviour:
   - name: SpriteShapeGeometryCache
     shown: 0
   - name: SpriteShapeController
+    shown: 0
+  - name: iOSNotificationsWrapper
+    shown: 0
+  - name: AndroidReceivedNotificationMainThreadDispatcher
     shown: 0
   - name: DOTweenComponent
     shown: 0

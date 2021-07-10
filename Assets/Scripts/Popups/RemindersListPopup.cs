@@ -21,6 +21,7 @@ namespace Hourly.UI
             if(allTask.IsNullOrEmpty()) 
                 return;
             
+            allTask.Sort((t1, t2) => (int) t1.Time?.CompareTo(t2.Time));
             foreach (var t in allTask)
             {
                 CreateTask(t);
@@ -47,7 +48,7 @@ namespace Hourly.UI
         private ReminderTaskCell CreateTask(ReminderTask task)
         {
             var t = Instantiate(reminderTaskPrefab, Contents);
-            t.Init(task,rt => MainManager.Instance.ShowAddNewItemPopup(rt));
+            t.Init(task,rt => MainManager.Instance.EditThisTask(rt));
             _reminderTaskCells.Add(t);
             return t;
         }
