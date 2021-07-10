@@ -25,7 +25,11 @@ namespace Hourly
         public void AddNewTask()
         {
             // Create an empty task with right index
-            var newTask = new ReminderTask {TaskIndex = Prefs.AllReminderTasks.Select(t => t.TaskIndex).Max() + 1};
+            var nextTaskIndex = 0;
+            var allTaskIndexes = Prefs.AllReminderTasks?.Select(t => t.TaskIndex);
+            if (!allTaskIndexes.IsNullOrEmpty())
+                nextTaskIndex = allTaskIndexes.Max() + 1;
+            var newTask = new ReminderTask {TaskIndex = nextTaskIndex};
             EditThisTask(newTask);
         }
 

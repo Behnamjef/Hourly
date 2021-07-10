@@ -21,7 +21,14 @@ namespace Hourly.UI
             if(allTask.IsNullOrEmpty()) 
                 return;
             
-            allTask.Sort((t1, t2) => (int) t1.Time?.CompareTo(t2.Time));
+            allTask.Sort((t1, t2) =>
+            {
+                if (t1?.Time == null)
+                    return 1;
+                if (t2?.Time == null)
+                    return -1;
+                return (int) t1.Time?.CompareTo(t2.Time);
+            });
             foreach (var t in allTask)
             {
                 CreateTask(t);
