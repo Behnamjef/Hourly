@@ -11,6 +11,8 @@ namespace Hourly.Calendar
         public int DayOfYear => DateTime.DayOfYear;
         public DayOfWeek DayOfWeek => DateTime.DayOfWeek;
         public string MonthName => DateTime.ToString("MMMM");
+        public int Hour => DateTime.Hour;
+        public int Minute => DateTime.Minute;
 
         public CalendarDay(DateTime dateTime)
         {

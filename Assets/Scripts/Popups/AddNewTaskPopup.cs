@@ -31,7 +31,7 @@ namespace Hourly.UI
         {
             _titleInputField.text = _reminderTask.Title;
             _noteInputField.text = _reminderTask.Note;
-            _reminderTimeText.text = _reminderTask.Time.ToString();
+            _reminderTimeText.text = _reminderTask.Time?.ToString("g");
         }
 
         private void OnDateSelected(DateTime reminderDate)

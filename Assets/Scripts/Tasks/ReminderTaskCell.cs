@@ -10,10 +10,11 @@ namespace Hourly
         private CustomText TitleText => GetCachedComponentInChildren<CustomText>();
         private ReminderTask _reminderTask;
         private Action<ReminderTask> _onTaskClicked;
-        
-        public void Init(ReminderTask reminder,Action<ReminderTask> onTaskClicked)
+
+        public void Init(ReminderTask reminder, Action<ReminderTask> onTaskClicked)
         {
-            TitleText.text = reminder.Title;
+            var time = reminder.Time?.ToString("g");
+            TitleText.text = reminder.Title + (time != null ? " -> " + time : "");
             _reminderTask = reminder;
             _onTaskClicked = onTaskClicked;
         }

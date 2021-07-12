@@ -19,7 +19,7 @@ namespace Hourly.Calendar
         private GridLayoutGroup _gridLayout => GetCachedComponentInChildren<GridLayoutGroup>();
         private CalendarDay _currentCalendarDay;
 
-        private TMP_InputField TimeInputField => GetCachedComponentInChildren<TMP_InputField>();
+        private TimeSelector TimeSelector => GetCachedComponentInChildren<TimeSelector>();
 
         public Action<DateTime> OnDateSelected;
         
@@ -36,7 +36,7 @@ namespace Hourly.Calendar
         {
             _yearText.text = _currentCalendarDay.Year.ToString();
             _monthText.text = _currentCalendarDay.MonthName;
-            TimeInputField.text = DateTime.Now.ToString("t");
+            TimeSelector.Fill(new CalendarDay(DateTime.Now));
         }
 
         private void FillCells()
@@ -97,18 +97,12 @@ namespace Hourly.Calendar
 
         public void SaveTimeForTask()
         {
-            if (DateTime.TryParse(TimeInputField.text, out var dateTime))
-            {
-                var reminderDate = new DateTime(_currentCalendarDay.Year, _currentCalendarDay.Month,
-                    _currentCalendarDay.Day, dateTime.Hour, dateTime.Minute,0);
+            var time = TimeSelector.GetTime();
+            var reminderDate = new DateTime(_currentCalendarDay.Year, _currentCalendarDay.Month,
+                _currentCalendarDay.Day, time.Hour, time.Minute,0);
 
-                OnDateSelected?.Invoke(reminderDate);
-                Close();
-                return;
-            }
-
-            TimeInputField.text = "Wrong time format!";
-            TimeInputField.Select();
+            OnDateSelected?.Invoke(reminderDate);
+            Close();
         }
     }
 #if UNITY_EDITOR
