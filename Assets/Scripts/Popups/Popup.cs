@@ -1,15 +1,16 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Hourly.UI
 {
-    public abstract class Popup : CommonBehaviour
+    public abstract class Popup : CommonUiBehaviour
     {
         public void Show()
         {
             SetActive(true);
         }
         
-        public virtual void Init(IPopupData data = null)
+        public virtual async Task Init(IPopupData data = null)
         {
         }
         

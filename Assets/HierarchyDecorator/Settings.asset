@@ -523,6 +523,8 @@ MonoBehaviour:
     shown: 0
   - name: CommonBehaviour
     shown: 0
+  - name: CommonUiBehaviour
+    shown: 0
   - name: SingletonBehaviour`1
     shown: 0
   - name: MainManager
@@ -536,6 +538,8 @@ MonoBehaviour:
   - name: RemindersListPopup
     shown: 0
   - name: CustomText
+    shown: 0
+  - name: ReminderTextGroup
     shown: 0
   - name: NotificationManager
     shown: 0

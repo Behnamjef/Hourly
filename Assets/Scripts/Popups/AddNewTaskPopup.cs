@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Hourly.Calendar;
 using TMPro;
 using UnityEngine;
@@ -18,9 +19,9 @@ namespace Hourly.UI
 
         private ReminderTask _reminderTask;
 
-        public override void Init(IPopupData data)
+        public override async Task Init(IPopupData data)
         {
-            base.Init(data);
+            await base.Init(data);
             _data = data as Data;
             DateSelector.OnDateSelected = OnDateSelected;
             _reminderTask = _data?.ReminderTask ?? new ReminderTask();
