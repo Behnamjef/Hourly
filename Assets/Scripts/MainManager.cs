@@ -36,7 +36,11 @@ namespace Hourly
         public void EditThisTask(ReminderTask reminderTask)
         {
             // Pass the task to popup
-            AddNewTaskPopup.Init(new AddNewTaskPopup.Data {OnFinishClicked = OnTaskAdded, ReminderTask = reminderTask});
+            AddNewTaskPopup.Init(new AddNewTaskPopup.Data {
+                OnFinishClicked = OnTaskAdded, 
+                OnDeleteClicked = OnTaskDeleted, 
+                ReminderTask = reminderTask});
+            
             RemindersListPopup.Close();
             AddNewTaskPopup.Show();
         }
@@ -44,13 +48,17 @@ namespace Hourly
         private void OnTaskAdded(ReminderTask task)
         {
             // Save task
-            var allTasks = Prefs.AllReminderTasks;
-            var currentTask = allTasks?.Find(t => t.TaskIndex == task.TaskIndex);
-            if (currentTask != null)
-                allTasks.Remove(currentTask);
-            allTasks = allTasks.Append(task).ToList();
-            Prefs.AllReminderTasks = allTasks;
+            TaskManager.AddOrUpdateTask(task);
 
+            // Show task list
+            ShowAllTaskPopup();
+        }
+
+        private void OnTaskDeleted(ReminderTask task)
+        {
+            // Remove task
+            TaskManager.RemoveTask(task.TaskIndex);
+            
             // Show task list
             ShowAllTaskPopup();
         }

@@ -63,6 +63,13 @@ namespace Hourly.UI
             Close();
         }
 
+        public void DeleteTask()
+        {
+            _data.OnDeleteClicked?.Invoke(_reminderTask);
+
+            Close();
+        }
+
         public void ShowCalendar()
         {
             DateSelector.ShowCalendar(DateTime.Now);
@@ -71,6 +78,7 @@ namespace Hourly.UI
         public class Data : IPopupData
         {
             public Action<ReminderTask> OnFinishClicked;
+            public Action<ReminderTask> OnDeleteClicked;
             public ReminderTask ReminderTask;
         }
     }
