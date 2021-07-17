@@ -19,17 +19,14 @@ namespace Hourly
 
         private void Init()
         {
+            Prefs.LoadProfile();
             ShowAllTaskPopup();
         }
 
         public void AddNewTask()
         {
             // Create an empty task with right index
-            var nextTaskIndex = 0;
-            var allTaskIndexes = Prefs.AllReminderTasks?.Select(t => t.TaskIndex);
-            if (!allTaskIndexes.IsNullOrEmpty())
-                nextTaskIndex = allTaskIndexes.Max() + 1;
-            var newTask = new ReminderTask {TaskIndex = nextTaskIndex};
+            var newTask = new ReminderTask {TaskIndex = Prefs.UserProfile.LastTaskIndex++};
             EditThisTask(newTask);
         }
 
@@ -69,27 +66,29 @@ namespace Hourly
 
         private void ShowAllTaskPopup()
         {
-            RemindersListPopup.Init(new RemindersListPopup.Data {AllTasks = Prefs.AllReminderTasks});
+            RemindersListPopup.Init(new RemindersListPopup.Data {AllTasks = Prefs.UserProfile.AllReminderTasks});
             RemindersListPopup.Show();
             AddNewTaskPopup.Close();
         }
 
         private void OnApplicationFocus(bool hasFocus)
         {
+            Prefs.SaveProfile();
             SetupNotifications();
         }
 
         private void OnApplicationQuit()
         {
+            Prefs.SaveProfile();
             SetupNotifications();
         }
 
         private static void SetupNotifications()
         {
-            if (Prefs.AllReminderTasks.IsNullOrEmpty())
+            if (Prefs.UserProfile.AllReminderTasks.IsNullOrEmpty())
                 return;
 
-            NotificationManager.Instance.SetupNotifications(Prefs.AllReminderTasks.ToArray());
+            NotificationManager.Instance.SetupNotifications(Prefs.UserProfile.AllReminderTasks.ToArray());
         }
     }
 }

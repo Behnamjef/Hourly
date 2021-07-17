@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Hourly.Calendar;
+using Hourly.Repeat;
 using TMPro;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Hourly.UI
         [SerializeField] private CustomText _reminderTimeText;
 
         private DateSelector DateSelector => GetCachedComponentInChildren<DateSelector>();
+        private RepeatSection RepeatSection => GetCachedComponentInChildren<RepeatSection>();
 
         private Data _data;
 
@@ -33,6 +35,10 @@ namespace Hourly.UI
             _titleInputField.text = _reminderTask.Title;
             _noteInputField.text = _reminderTask.Note;
             _reminderTimeText.text = _reminderTask.Time?.ToString("g");
+            RepeatSection.Init(new RepeatSection.FillData{RepeatingData = _reminderTask.RepeatData,OnNewTypeSelected =
+            {
+                // ToDo: Update time here!
+            }});
         }
 
         private void OnDateSelected(DateTime reminderDate)

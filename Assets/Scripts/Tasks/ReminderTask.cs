@@ -1,4 +1,5 @@
 using System;
+using Hourly.Repeat;
 
 namespace Hourly
 {
@@ -10,5 +11,6 @@ namespace Hourly
         public DateTime? Time;
         public bool IsDone;
         public int TaskIndex;
+        public TaskRepeatingData RepeatData;
     }
 }

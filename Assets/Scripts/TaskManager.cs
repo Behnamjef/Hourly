@@ -7,17 +7,14 @@ namespace Hourly
         public static void AddOrUpdateTask(ReminderTask task)
         {
             RemoveTask(task.TaskIndex);
-            Prefs.AllReminderTasks = Prefs.AllReminderTasks.Append(task).ToList();
+            Prefs.UserProfile.AllReminderTasks = Prefs.UserProfile.AllReminderTasks.Append(task).ToList();
         }
 
         public static void RemoveTask(int index)
         {
-            var allTasks = Prefs.AllReminderTasks;
-            var currentTask = allTasks?.Find(t => t.TaskIndex == index);
+            var currentTask = Prefs.UserProfile.AllReminderTasks?.Find(t => t.TaskIndex == index);
             if (currentTask != null)
-                allTasks.Remove(currentTask);
-            
-            Prefs.AllReminderTasks = allTasks;
+                Prefs.UserProfile.AllReminderTasks.Remove(currentTask);
         }
     }
 }
