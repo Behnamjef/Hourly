@@ -6,5 +6,11 @@ namespace Hourly.Profile
     {
         public List<ReminderTask> AllReminderTasks;
         public int LastTaskIndex;
+
+
+        public UserProfile()
+        {
+            AllReminderTasks = new List<ReminderTask>();
+        }
     }
 }

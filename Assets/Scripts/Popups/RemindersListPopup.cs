@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +18,7 @@ namespace Hourly.UI
         public override async Task Init(IPopupData data)
         {
             await base.Init(data);
-            
+
             ClearList();
             _reminderTaskCells = new List<ReminderTaskCell>();
 
@@ -25,20 +26,35 @@ namespace Hourly.UI
             if (allTask.IsNullOrEmpty())
                 return;
 
+            allTask = allTask.Where(t => !t.IsDone).ToList();
             allTask.Sort((t1, t2) =>
             {
-                if (t1?.Time == null)
+                if (t1?.NotifTime == null)
                     return 1;
-                if (t2?.Time == null)
+                if (t2?.NotifTime == null)
                     return -1;
-                return (int) t1.Time?.CompareTo(t2.Time);
+                return (int) t1.NotifTime?.CompareTo(t2.NotifTime);
             });
             foreach (var t in allTask)
             {
                 await CreateTask(t);
             }
+        }
 
-            await Task.Delay(300);
+        public async Task AddJustThisTask(ReminderTask task)
+        {
+            var nextTaskIndex = _reminderTaskCells.FirstOrDefault(t => t.ReminderTask.NotifTime > task.NotifTime)?.transform
+                .GetSiblingIndex() ?? _reminderTaskCells.Count;
+            var newTask = await CreateTask(task);
+            newTask.transform.SetSiblingIndex(nextTaskIndex);
+            
+            await RebuildAllRects();
+        }
+
+        protected override async void OnShow()
+        {
+            base.OnShow();
+
             await RebuildAllRects();
         }
 
@@ -59,20 +75,18 @@ namespace Hourly.UI
             await CreateTask(task);
         }
 
-        private async Task CreateTask(ReminderTask task)
+        private async Task<ReminderTaskCell> CreateTask(ReminderTask task)
         {
-            if (task.IsDone) 
-                return;
-            
             var t = Instantiate(reminderTaskPrefab, Contents);
             t.Init(new CellData
             {
-                Reminder = task, 
-                OnTaskClicked = rt => MainManager.Instance.EditThisTask(rt),
-                OnTaskComplete = rt => MainManager.Instance.AddOrUpdateTask(rt)
+                Reminder = task,
+                OnTaskClicked = rt => MainManager.Instance.OpenPanelToEditThisTask(rt),
+                OnTaskComplete = rt => MainManager.Instance.OnTaskComplete(rt)
             });
-            
+
             _reminderTaskCells.Add(t);
+            return t;
         }
 
         public class Data : IPopupData

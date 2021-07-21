@@ -8,9 +8,10 @@ namespace Hourly
         public string Title;
         public string Note;
         public int GroupIndex;
-        public DateTime? Time;
+        public DateTime? NotifTime;
         public bool IsDone;
         public int TaskIndex;
+        public int ParentIndex;
         public TaskRepeatingData RepeatData;
     }
 }

@@ -369,9 +369,9 @@ MonoBehaviour:
     shown: 0
   - name: MeshRenderer
     shown: 0
-  - name: LightProbeGroup
-    shown: 0
   - name: LODGroup
+    shown: 0
+  - name: LightProbeGroup
     shown: 0
   - name: NetworkView
     shown: 0
@@ -530,6 +530,8 @@ MonoBehaviour:
   - name: MainManager
     shown: 0
   - name: ReminderTaskCell
+    shown: 0
+  - name: RepeatSection
     shown: 0
   - name: AddNewTaskPopup
     shown: 0

@@ -14,25 +14,25 @@ namespace Hourly.UI
         {
         }
         
-        protected virtual void OnShow()
+        protected virtual async void OnShow()
         {
         }
 
-        protected virtual void OnHide()
+        protected virtual async void OnHide()
         {
         }
 
-        private void OnEnable()
+        private async void OnEnable()
         {
             OnShow();
         }
 
-        private void OnDisable()
+        private async void OnDisable()
         {
             OnHide();
         }
 
-        public void Close()
+        public async void Close()
         {
             SetActive(false);
         }

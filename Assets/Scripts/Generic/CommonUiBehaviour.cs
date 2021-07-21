@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,13 +11,21 @@ namespace Hourly
 
         protected async Task RebuildAllRects()
         {
+            StartCoroutine(RebuildUI());
+        }
+
+        private IEnumerator RebuildUI()
+        {
+            yield return new WaitForEndOfFrame();
             var allRects = GetComponentsInChildren<RectTransform>();
             foreach (var rect in allRects)
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
-                await Task.Delay(10);
             }
-            LayoutRebuilder.ForceRebuildLayoutImmediate(RectTransform);
+            foreach (var rect in allRects)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+            }
         }
     }
 }

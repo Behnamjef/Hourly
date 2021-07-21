@@ -8,7 +8,13 @@ namespace Hourly
 {
     public static class Prefs
     {
-        public static UserProfile UserProfile { private set; get; }
+        public static UserProfile UserProfile
+        {
+            private set => _userProfile = value;
+            get => _userProfile ?? new UserProfile();
+        }
+
+        private static UserProfile _userProfile;
         // public static List<ReminderTask> AllReminderTasks
         // {
         //     set
@@ -35,11 +41,13 @@ namespace Hourly
 
         public static void LoadProfile()
         {
-            UserProfile = JsonConvert.DeserializeObject<UserProfile>(PlayerPrefs.GetString("UserProfile")) ?? new UserProfile();
+            UserProfile = JsonConvert.DeserializeObject<UserProfile>(PlayerPrefs.GetString("UserProfile")) ??
+                          new UserProfile();
         }
-        
+
         public static void SaveProfile()
         {
+            if(_userProfile == null) return;
             var json = JsonConvert.SerializeObject(UserProfile);
             PlayerPrefs.SetString("UserProfile", json);
         }

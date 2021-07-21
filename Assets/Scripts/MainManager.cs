@@ -9,8 +9,8 @@ namespace Hourly
     public class MainManager : SingletonBehaviour<MainManager>
     {
         // ToDo: Should be in the navigator class
-        private Popup AddNewTaskPopup => GetCachedComponentInChildren<AddNewTaskPopup>();
-        private Popup RemindersListPopup => GetCachedComponentInChildren<RemindersListPopup>();
+        private AddNewTaskPopup AddNewTaskPopup => GetCachedComponentInChildren<AddNewTaskPopup>();
+        private RemindersListPopup RemindersListPopup => GetCachedComponentInChildren<RemindersListPopup>();
 
         private void Start()
         {
@@ -26,11 +26,11 @@ namespace Hourly
         public void AddNewTask()
         {
             // Create an empty task with right index
-            var newTask = new ReminderTask {TaskIndex = Prefs.UserProfile.LastTaskIndex++};
-            EditThisTask(newTask);
+            var newTask = TaskManager.GetNewTask();
+            OpenPanelToEditThisTask(newTask);
         }
 
-        public void EditThisTask(ReminderTask reminderTask)
+        public void OpenPanelToEditThisTask(ReminderTask reminderTask)
         {
             // Pass the task to popup
             AddNewTaskPopup.Init(new AddNewTaskPopup.Data
@@ -58,15 +58,24 @@ namespace Hourly
             TaskManager.AddOrUpdateTask(task);
         }
 
+        public async void OnTaskComplete(ReminderTask task)
+        {
+            // Handle completing a task
+            var childTask = TaskManager.TaskCompleteStateChanged(task);
+            if (childTask == null) return;
+
+            await RemindersListPopup.AddJustThisTask(childTask);
+        }
+
         private void OnTaskDeleted(ReminderTask task)
         {
             // Remove task
             TaskManager.RemoveTask(task.TaskIndex);
         }
 
-        private void ShowAllTaskPopup()
+        private async void ShowAllTaskPopup()
         {
-            RemindersListPopup.Init(new RemindersListPopup.Data {AllTasks = Prefs.UserProfile.AllReminderTasks});
+            await RemindersListPopup.Init(new RemindersListPopup.Data {AllTasks = Prefs.UserProfile.AllReminderTasks});
             RemindersListPopup.Show();
             AddNewTaskPopup.Close();
         }

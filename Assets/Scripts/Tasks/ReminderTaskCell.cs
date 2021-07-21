@@ -8,29 +8,23 @@ namespace Hourly
 {
     public class ReminderTaskCell : CommonUiBehaviour
     {
+        public ReminderTask ReminderTask => _data.Reminder;
         private ReminderTextGroup TextGroup => GetCachedComponentInChildren<ReminderTextGroup>();
         private Toggle Toggle => GetCachedComponentInChildren<Toggle>();
 
         private CellData _data;
 
+        
         public async void Init(CellData data)
         {
             _data = data;
 
-            Toggle.onValueChanged.AddListener(OnValueChanged);
             Toggle.isOn = _data.Reminder.IsDone;
+            Toggle.onValueChanged.AddListener(OnValueChanged);
             
             await TextGroup.FillTexts(_data.Reminder);
-
-            await FixHeight();
         }
-
-        private async Task FixHeight()
-        {
-            await Task.Delay(10);
-            RectTransform.sizeDelta = new Vector2(RectTransform.sizeDelta.x, TextGroup.GetHeight());
-            await RebuildAllRects();
-        }
+        
         private void OnValueChanged(bool isDone)
         {
             // ToDo: Play animation or ...

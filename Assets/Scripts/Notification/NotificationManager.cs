@@ -7,37 +7,37 @@ namespace Hourly.Notification
 {
     public class NotificationManager : SingletonBehaviour<NotificationManager>
     {
+        private const string REMINDER_CHANNEL_NAME = "Reminders";
+
         public void SetupNotifications(ReminderTask[] allTasks)
         {
             AndroidNotificationCenter.CancelAllNotifications();
             if (allTasks.IsNullOrEmpty()) return;
 
-            allTasks = allTasks.Where(t => t.Time != null && t.Time > DateTime.Now).ToArray();
-            var allGroups = allTasks.Select(t => t.GroupIndex).Distinct();
-            foreach (var group in allGroups)
-            {
-                var channel = new AndroidNotificationChannel()
-                {
-                    Id = group.ToString(),
-                    Name = group.ToString(),
-                    Importance = Importance.High,
-                    Description = "Generic notifications",
-                };
-                AndroidNotificationCenter.RegisterNotificationChannel(channel);
-            }
+            allTasks = allTasks.Where(t => t.NotifTime != null && t.NotifTime > DateTime.Now).ToArray();
 
-            foreach (var task in allTasks.Where(t => t.Time != null))
+            var channel = new AndroidNotificationChannel()
+            {
+                Id = REMINDER_CHANNEL_NAME,
+                Name = REMINDER_CHANNEL_NAME,
+                Description = "Generic notifications",
+                CanShowBadge = true,
+                
+            };
+            AndroidNotificationCenter.RegisterNotificationChannel(channel);
+
+
+            foreach (var task in allTasks.Where(t => !t.IsDone && t.NotifTime != null))
             {
                 var notification = new AndroidNotification
                 {
                     Title = task.Title,
                     Text = task.Note,
-                    FireTime = task.Time ?? new DateTime()
+                    FireTime = task.NotifTime ?? new DateTime()
                 };
 
                 AndroidNotificationCenter.SendNotification(notification, task.GroupIndex.ToString());
             }
-            
         }
     }
 }

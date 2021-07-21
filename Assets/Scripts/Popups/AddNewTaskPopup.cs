@@ -34,16 +34,21 @@ namespace Hourly.UI
         {
             _titleInputField.text = _reminderTask.Title;
             _noteInputField.text = _reminderTask.Note;
-            _reminderTimeText.text = _reminderTask.Time?.ToString("g");
-            RepeatSection.Init(new RepeatSection.FillData{RepeatingData = _reminderTask.RepeatData,OnNewTypeSelected =
+            _reminderTimeText.text = _reminderTask.NotifTime?.ToString("g");
+            RepeatSection.Init(new RepeatSection.FillData
             {
-                // ToDo: Update time here!
-            }});
+                RepeatingData = _reminderTask.RepeatData, 
+                OnNewTypeSelected = type =>
+                {
+                    // ToDo: Update time here!
+                    _reminderTask.RepeatData = new TaskRepeatingData(type);
+                }
+            });
         }
 
         private void OnDateSelected(DateTime reminderDate)
         {
-            _reminderTask.Time = reminderDate;
+            _reminderTask.NotifTime = reminderDate;
             _reminderTimeText.text = reminderDate.ToString();
         }
 

@@ -12,12 +12,10 @@ namespace Hourly.UI
 
         public async Task FillTexts(ReminderTask task)
         {
-            var time = task.Time?.ToString("g");
+            var time = task.NotifTime?.ToString("g");
             _titleText.text = task.Title;
             _noteText.text = task.Note;
             _timeText.text = time != null ? " -> " + time : "";
-
-            await RebuildAllRects();
         }
 
         public float GetHeight()
