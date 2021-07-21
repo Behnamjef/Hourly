@@ -15,22 +15,28 @@ namespace Hourly
         public static ReminderTask TaskCompleteStateChanged(ReminderTask task)
         {
             // The done state change on cell class
-            if (!task.IsDone || task.RepeatData == null || task.RepeatData.RepeatType == RepeatType.Never) return null;
+            if (!task.IsDone || task.ReminderNotificationTime?.RepeatData == null ||
+                task.ReminderNotificationTime.RepeatData.RepeatType == RepeatType.Never) return null;
 
             var childTask = Prefs.UserProfile.AllReminderTasks.Find(t => t.ParentIndex == task.TaskIndex);
             if (childTask != null) return null;
 
+            var notificationTime = new ReminderNotificationData
+            {
+                NotificationTime = GetNextRepeatTime(task),
+                RepeatData = task.ReminderNotificationTime.RepeatData
+            };
+            
             childTask = new ReminderTask
             {
                 ParentIndex = task.TaskIndex,
                 TaskIndex = GetNewTask().TaskIndex,
-                NotifTime = GetNextRepeatTime(task),
+                ReminderNotificationTime = notificationTime,
                 IsDone = false,
-                
+
                 Title = task.Title,
                 Note = task.Note,
                 GroupIndex = task.GroupIndex,
-                RepeatData = task.RepeatData,
             };
 
             AddOrUpdateTask(childTask);
@@ -52,7 +58,7 @@ namespace Hourly
 
         private static DateTime? GetNextRepeatTime(ReminderTask task)
         {
-            return task.RepeatData.RepeatType switch
+            return task.ReminderNotificationTime.RepeatData.RepeatType switch
             {
                 RepeatType.Never => null,
                 RepeatType.Daily => task.NotifTime?.AddDays(1),

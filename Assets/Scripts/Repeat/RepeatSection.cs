@@ -16,7 +16,7 @@ namespace Hourly.Repeat
             _data = data;
             
             // Get type of repeat
-            var type = _data.RepeatingData?.RepeatType ?? RepeatType.Never;
+            var type = _data?.RepeatType ?? RepeatType.Never;
 
             // If drop down was not filled before
             if (Dropdown.options.IsNullOrEmpty())
@@ -32,7 +32,7 @@ namespace Hourly.Repeat
 
         public class FillData
         {
-            public TaskRepeatingData RepeatingData;
+            public RepeatType RepeatType;
             public Action<RepeatType> OnNewTypeSelected;
         }
     }

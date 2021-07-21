@@ -541,6 +541,8 @@ MonoBehaviour:
     shown: 0
   - name: CustomText
     shown: 0
+  - name: NotificationTimeSection
+    shown: 0
   - name: ReminderTextGroup
     shown: 0
   - name: NotificationManager

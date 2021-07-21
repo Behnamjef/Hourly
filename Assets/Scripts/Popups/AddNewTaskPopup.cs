@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hourly.Calendar;
 using Hourly.Repeat;
+using Hourly.Time;
 using TMPro;
 using UnityEngine;
 
@@ -12,10 +13,11 @@ namespace Hourly.UI
     {
         [SerializeField] private TMP_InputField _titleInputField;
         [SerializeField] private TMP_InputField _noteInputField;
-        [SerializeField] private CustomText _reminderTimeText;
 
         private DateSelector DateSelector => GetCachedComponentInChildren<DateSelector>();
-        private RepeatSection RepeatSection => GetCachedComponentInChildren<RepeatSection>();
+
+        private NotificationTimeSection NotificationTimeSection =>
+            GetCachedComponentInChildren<NotificationTimeSection>();
 
         private Data _data;
 
@@ -34,28 +36,20 @@ namespace Hourly.UI
         {
             _titleInputField.text = _reminderTask.Title;
             _noteInputField.text = _reminderTask.Note;
-            _reminderTimeText.text = _reminderTask.NotifTime?.ToString("g");
-            RepeatSection.Init(new RepeatSection.FillData
-            {
-                RepeatingData = _reminderTask.RepeatData, 
-                OnNewTypeSelected = type =>
-                {
-                    // ToDo: Update time here!
-                    _reminderTask.RepeatData = new TaskRepeatingData(type);
-                }
-            });
+            NotificationTimeSection.Init(_reminderTask);
         }
 
         private void OnDateSelected(DateTime reminderDate)
         {
-            _reminderTask.NotifTime = reminderDate;
-            _reminderTimeText.text = reminderDate.ToString();
+            _reminderTask.ReminderNotificationTime.NotificationTime = reminderDate;
+            NotificationTimeSection.SetDate(reminderDate);
         }
 
-        protected override void OnShow()
+        protected override async void OnShow()
         {
             base.OnShow();
             _titleInputField.Select();
+            await RebuildAllRects();
         }
 
         protected override void OnHide()
@@ -63,13 +57,13 @@ namespace Hourly.UI
             base.OnHide();
             _titleInputField.text = "";
             _noteInputField.text = "";
-            _reminderTimeText.text = "";
         }
 
         public void DoneEditing()
         {
             _reminderTask.Title = _titleInputField.text;
             _reminderTask.Note = _noteInputField.text;
+            _reminderTask.ReminderNotificationTime = NotificationTimeSection.GetSelectedNotificationTime();
             _data.OnFinishClicked?.Invoke(_reminderTask);
 
             Close();
@@ -84,7 +78,8 @@ namespace Hourly.UI
 
         public void ShowCalendar()
         {
-            DateSelector.ShowCalendar(DateTime.Now);
+            DateSelector.ShowCalendar(NotificationTimeSection.GetSelectedNotificationTime()?.NotificationTime ??
+                                      TimeProvider.GetCurrentTime());
         }
 
         public class Data : IPopupData

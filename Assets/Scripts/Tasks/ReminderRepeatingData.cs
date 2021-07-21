@@ -2,11 +2,11 @@
 
 namespace Hourly
 {
-    public class TaskRepeatingData
+    public class ReminderRepeatingData
     {
         public RepeatType RepeatType;
 
-        public TaskRepeatingData(RepeatType repeatType)
+        public ReminderRepeatingData(RepeatType repeatType)
         {
             RepeatType = repeatType;
         }

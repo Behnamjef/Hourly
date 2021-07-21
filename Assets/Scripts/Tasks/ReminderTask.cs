@@ -8,10 +8,18 @@ namespace Hourly
         public string Title;
         public string Note;
         public int GroupIndex;
-        public DateTime? NotifTime;
+        public ReminderNotificationData ReminderNotificationTime;
         public bool IsDone;
         public int TaskIndex;
         public int ParentIndex;
-        public TaskRepeatingData RepeatData;
+
+        public DateTime? NotifTime
+        {
+            get
+            {
+                ReminderNotificationTime ??= new ReminderNotificationData();
+                return ReminderNotificationTime.NotificationTime;
+            }
+        }
     }
 }

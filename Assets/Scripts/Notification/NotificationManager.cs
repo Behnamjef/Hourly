@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Hourly.Time;
 using Unity.Notifications.Android;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace Hourly.Notification
             AndroidNotificationCenter.CancelAllNotifications();
             if (allTasks.IsNullOrEmpty()) return;
 
-            allTasks = allTasks.Where(t => t.NotifTime != null && t.NotifTime > DateTime.Now).ToArray();
+            allTasks = allTasks.Where(t => t.NotifTime != null && t.NotifTime > TimeProvider.GetCurrentTime()).ToArray();
 
             var channel = new AndroidNotificationChannel()
             {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Hourly;
+using Hourly.Time;
 using Hourly.UI;
 using TMPro;
 using UnityEditor;
@@ -22,7 +23,7 @@ namespace Hourly.Calendar
         private TimeSelector TimeSelector => GetCachedComponentInChildren<TimeSelector>();
 
         public Action<DateTime> OnDateSelected;
-        
+
         public void ShowCalendar(DateTime processDate)
         {
             _currentCalendarDay = new CalendarDay(processDate);
@@ -36,14 +37,14 @@ namespace Hourly.Calendar
         {
             _yearText.text = _currentCalendarDay.Year.ToString();
             _monthText.text = _currentCalendarDay.MonthName;
-            TimeSelector.Fill(new CalendarDay(DateTime.Now));
+            TimeSelector.Fill(_currentCalendarDay);
         }
 
         private void FillCells()
         {
             CreateCells();
             var allDays = Calendar.GetCalendarDays(_currentCalendarDay);
-            
+
             var index = 0;
             foreach (var day in allDays)
             {
@@ -56,7 +57,7 @@ namespace Hourly.Calendar
             }
         }
 
-        private void CreateCells()
+        private async void CreateCells()
         {
             if (!_calendarDayCells.IsNullOrEmpty()) return;
             _calendarDayCells = new List<CalendarDayCell>();
@@ -67,41 +68,47 @@ namespace Hourly.Calendar
                 _calendarDayCells.Add(cell);
             }
 
-            LayoutRebuilder.ForceRebuildLayoutImmediate(_gridLayout.GetComponent<RectTransform>());
+            await RebuildAllRects();
         }
 
         public void ShowNextMonth()
         {
-            ShowCalendar(_currentCalendarDay.DateTime.AddMonths(1));
+            ShowCalendar(GetCurrentSelectedTime().AddMonths(1));
         }
 
         public void ShowPreviousMonth()
         {
-            ShowCalendar(_currentCalendarDay.DateTime.AddMonths(-1));
+            ShowCalendar(GetCurrentSelectedTime().AddMonths(-1));
         }
 
         public void ShowNextYear()
         {
-            ShowCalendar(_currentCalendarDay.DateTime.AddYears(1));
+            ShowCalendar(GetCurrentSelectedTime().AddYears(1));
         }
 
         public void ShowPreviousYear()
         {
-            ShowCalendar(_currentCalendarDay.DateTime.AddYears(-1));
+            ShowCalendar(GetCurrentSelectedTime().AddYears(-1));
         }
 
         private void OnNewDateSelected(CalendarDay calendarDay)
         {
-            ShowCalendar(calendarDay.DateTime);
+            _currentCalendarDay = calendarDay;
+            var selectedTime = GetCurrentSelectedTime();
+            ShowCalendar(selectedTime);
         }
 
-        public void SaveTimeForTask()
+        private DateTime GetCurrentSelectedTime()
         {
             var time = TimeSelector.GetTime();
             var reminderDate = new DateTime(_currentCalendarDay.Year, _currentCalendarDay.Month,
-                _currentCalendarDay.Day, time.Hour, time.Minute,0);
+                _currentCalendarDay.Day, time.Hour, time.Minute, 0);
+            return reminderDate;
+        }
 
-            OnDateSelected?.Invoke(reminderDate);
+        public void FinishSelectingTime()
+        {
+            OnDateSelected?.Invoke(GetCurrentSelectedTime());
             Close();
         }
     }
@@ -115,7 +122,7 @@ namespace Hourly.Calendar
             var calendar = target as DateSelector;
             if (GUILayout.Button("Fill calendar"))
             {
-                calendar.ShowCalendar(DateTime.Now);
+                calendar.ShowCalendar(TimeProvider.GetCurrentTime());
             }
         }
     }

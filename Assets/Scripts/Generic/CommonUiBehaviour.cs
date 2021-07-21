@@ -22,6 +22,7 @@ namespace Hourly
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
             }
+            yield return new WaitForEndOfFrame();
             foreach (var rect in allRects)
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
