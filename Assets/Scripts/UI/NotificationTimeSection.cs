@@ -18,15 +18,15 @@ namespace Hourly.UI
         public void Init(ReminderTask reminderTask)
         {
             Toggle.onValueChanged.AddListener(ToggleValueChanged);
-            Toggle.isOn = reminderTask.ReminderNotificationTime.NotificationTime != null;
+            Toggle.isOn = reminderTask.ReminderNotificationTime?.NotificationTime != null;
             ActivateTimeSection(Toggle.isOn);
 
-            if (reminderTask.NotifTime == null)
+            if (reminderTask.ReminderNotificationTime?.NotificationTime == null)
             {
                 return;
             }
 
-            SetDate((DateTime) reminderTask.ReminderNotificationTime.NotificationTime);
+            SetDate((DateTime) reminderTask.ReminderNotificationTime?.NotificationTime);
             SetRepeat(reminderTask.ReminderNotificationTime.RepeatData.RepeatType);
         }
 

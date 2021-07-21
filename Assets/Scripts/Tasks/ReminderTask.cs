@@ -12,14 +12,5 @@ namespace Hourly
         public bool IsDone;
         public int TaskIndex;
         public int ParentIndex;
-
-        public DateTime? NotifTime
-        {
-            get
-            {
-                ReminderNotificationTime ??= new ReminderNotificationData();
-                return ReminderNotificationTime.NotificationTime;
-            }
-        }
     }
 }

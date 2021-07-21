@@ -24,7 +24,7 @@ namespace Hourly
             var notificationTime = new ReminderNotificationData
             {
                 NotificationTime = GetNextRepeatTime(task),
-                RepeatData = task.ReminderNotificationTime.RepeatData
+                RepeatData = task.ReminderNotificationTime?.RepeatData
             };
             
             childTask = new ReminderTask
@@ -61,10 +61,10 @@ namespace Hourly
             return task.ReminderNotificationTime.RepeatData.RepeatType switch
             {
                 RepeatType.Never => null,
-                RepeatType.Daily => task.NotifTime?.AddDays(1),
-                RepeatType.Weekly => task.NotifTime?.AddDays(7),
-                RepeatType.Monthly => task.NotifTime?.AddMonths(1),
-                RepeatType.Yearly => task.NotifTime?.AddYears(1),
+                RepeatType.Daily => task.ReminderNotificationTime.NotificationTime?.AddDays(1),
+                RepeatType.Weekly => task.ReminderNotificationTime.NotificationTime?.AddDays(7),
+                RepeatType.Monthly => task.ReminderNotificationTime.NotificationTime?.AddMonths(1),
+                RepeatType.Yearly => task.ReminderNotificationTime.NotificationTime?.AddYears(1),
                 RepeatType.Custom => null,
                 _ => null
             };

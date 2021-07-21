@@ -41,6 +41,8 @@ namespace Hourly.UI
 
         private void OnDateSelected(DateTime reminderDate)
         {
+            _reminderTask.ReminderNotificationTime ??= new ReminderNotificationData();
+            
             _reminderTask.ReminderNotificationTime.NotificationTime = reminderDate;
             NotificationTimeSection.SetDate(reminderDate);
         }

@@ -29,11 +29,11 @@ namespace Hourly.UI
             allTask = allTask.Where(t => !t.IsDone).ToList();
             allTask.Sort((t1, t2) =>
             {
-                if (t1?.NotifTime == null)
+                if (t1?.ReminderNotificationTime?.NotificationTime == null)
                     return 1;
-                if (t2?.NotifTime == null)
+                if (t2?.ReminderNotificationTime?.NotificationTime == null)
                     return -1;
-                return (int) t1.NotifTime?.CompareTo(t2.NotifTime);
+                return (int) t1.ReminderNotificationTime.NotificationTime?.CompareTo(t2.ReminderNotificationTime.NotificationTime);
             });
             foreach (var t in allTask)
             {
@@ -43,7 +43,7 @@ namespace Hourly.UI
 
         public async Task AddJustThisTask(ReminderTask task)
         {
-            var nextTaskIndex = _reminderTaskCells.FirstOrDefault(t => t.ReminderTask.NotifTime > task.NotifTime)?.transform
+            var nextTaskIndex = _reminderTaskCells.FirstOrDefault(t => t.ReminderTask.ReminderNotificationTime?.NotificationTime > task.ReminderNotificationTime?.NotificationTime)?.transform
                 .GetSiblingIndex() ?? _reminderTaskCells.Count;
             var newTask = await CreateTask(task);
             newTask.transform.SetSiblingIndex(nextTaskIndex);
