@@ -47,7 +47,7 @@ namespace Hourly.UI
             currentNotifData ??= new ReminderNotificationData();
             
             currentNotifData.NotificationTime = notifyTime;
-            ReminderTimeText.text = notifyTime.ToString("g");
+            ReminderTimeText.text = notifyTime.ToString(TimeProvider.GENRAL_TIME_FORMAT);
         }
 
         public void SetRepeat(RepeatType repeatType)
