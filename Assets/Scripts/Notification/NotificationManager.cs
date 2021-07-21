@@ -34,7 +34,8 @@ namespace Hourly.Notification
                 {
                     Title = task.Title,
                     Text = task.Note,
-                    FireTime = task.ReminderNotificationTime?.NotificationTime ?? new DateTime()
+                    FireTime = task.ReminderNotificationTime?.NotificationTime ?? new DateTime(),
+                    UsesStopwatch = true,
                 };
 
                 AndroidNotificationCenter.SendNotification(notification, task.GroupIndex.ToString());
