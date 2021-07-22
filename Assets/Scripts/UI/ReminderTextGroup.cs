@@ -11,7 +11,7 @@ namespace Hourly.UI
         [SerializeField] private CustomText _noteText;
         [SerializeField] private CustomText _timeText;
 
-        public async Task FillTexts(ReminderTask task)
+        public async Task FillTexts(ToDoTask task)
         {
             var time = task.ReminderNotificationTime?.NotificationTime?.ToString(TimeProvider.GENRAL_TIME_FORMAT);
             _titleText.text = task.Title;

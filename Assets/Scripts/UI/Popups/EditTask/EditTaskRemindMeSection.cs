@@ -6,16 +6,16 @@ using UnityEngine.UI;
 
 namespace Hourly.UI
 {
-    public class NotificationTimeSection : CommonUiBehaviour
+    public class EditTaskRemindMeSection : CommonUiBehaviour
     {
         private Toggle Toggle => GetCachedComponentInChildren<Toggle>();
         [SerializeField] private CommonUiBehaviour TimeSection;
-        [SerializeField] private RepeatSection RepeatSection;
+        [SerializeField] private EditTaskRepeatSection RepeatSection;
         private CustomText ReminderTimeText => TimeSection.GetCachedComponentInChildren<CustomText>();
 
-        private ReminderNotificationData currentNotifData;
+        private ToDoTaskRemindMeData currentNotifData;
 
-        public void Init(ReminderTask reminderTask)
+        public void Init(ToDoTask reminderTask)
         {
             Toggle.onValueChanged.AddListener(ToggleValueChanged);
             Toggle.isOn = reminderTask.ReminderNotificationTime?.NotificationTime != null;
@@ -44,7 +44,7 @@ namespace Hourly.UI
 
         public void SetDate(DateTime notifyTime)
         {
-            currentNotifData ??= new ReminderNotificationData();
+            currentNotifData ??= new ToDoTaskRemindMeData();
             
             currentNotifData.NotificationTime = notifyTime;
             ReminderTimeText.text = notifyTime.ToString(TimeProvider.GENRAL_TIME_FORMAT);
@@ -52,7 +52,7 @@ namespace Hourly.UI
 
         public void SetRepeat(RepeatType repeatType)
         {
-            RepeatSection.Init(new RepeatSection.FillData
+            RepeatSection.Init(new EditTaskRepeatSection.FillData
             {
                 RepeatType = repeatType,
                 OnNewTypeSelected = OnRepeatTypeChanged
@@ -75,7 +75,7 @@ namespace Hourly.UI
             Toggle.onValueChanged.RemoveAllListeners();
         }
 
-        public ReminderNotificationData GetSelectedNotificationTime()
+        public ToDoTaskRemindMeData GetSelectedNotificationTime()
         {
             return currentNotifData;
         }

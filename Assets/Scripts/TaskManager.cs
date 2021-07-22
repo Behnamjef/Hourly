@@ -7,13 +7,13 @@ namespace Hourly
 {
     public static class TaskManager
     {
-        public static ReminderTask GetNewTask()
+        public static ToDoTask GetNewTask()
         {
             var nextTaskIndex = ++Prefs.UserProfile.LastTaskIndex;
-            return new ReminderTask {TaskIndex = nextTaskIndex};
+            return new ToDoTask {TaskIndex = nextTaskIndex};
         }
 
-        public static ReminderTask TaskCompleteStateChanged(ReminderTask task)
+        public static ToDoTask TaskCompleteStateChanged(ToDoTask task)
         {
             // The done state change on cell class
             if (!task.IsDone || task.ReminderNotificationTime?.RepeatData == null ||
@@ -22,13 +22,13 @@ namespace Hourly
             var childTask = Prefs.UserProfile.AllReminderTasks.Find(t => t.ParentIndex == task.TaskIndex);
             if (childTask != null) return null;
 
-            var notificationTime = new ReminderNotificationData
+            var notificationTime = new ToDoTaskRemindMeData
             {
                 NotificationTime = GetNextRepeatTime(task),
                 RepeatData = task.ReminderNotificationTime?.RepeatData
             };
             
-            childTask = new ReminderTask
+            childTask = new ToDoTask
             {
                 ParentIndex = task.TaskIndex,
                 TaskIndex = GetNewTask().TaskIndex,
@@ -44,7 +44,7 @@ namespace Hourly
             return childTask;
         }
 
-        public static void AddOrUpdateTask(ReminderTask task)
+        public static void AddOrUpdateTask(ToDoTask task)
         {
             RemoveTask(task.TaskIndex);
             Prefs.UserProfile.AllReminderTasks = Prefs.UserProfile.AllReminderTasks.Append(task).ToList();
@@ -57,7 +57,7 @@ namespace Hourly
                 Prefs.UserProfile.AllReminderTasks.Remove(currentTask);
         }
 
-        private static DateTime? GetNextRepeatTime(ReminderTask task)
+        private static DateTime? GetNextRepeatTime(ToDoTask task)
         {
             return task.ReminderNotificationTime.RepeatData.RepeatType switch
             {

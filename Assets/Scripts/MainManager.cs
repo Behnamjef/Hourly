@@ -9,8 +9,8 @@ namespace Hourly
     public class MainManager : SingletonBehaviour<MainManager>
     {
         // ToDo: Should be in the navigator class
-        private AddNewTaskPopup AddNewTaskPopup => GetCachedComponentInChildren<AddNewTaskPopup>();
-        private RemindersListPopup RemindersListPopup => GetCachedComponentInChildren<RemindersListPopup>();
+        private EditTaskPopup EditTaskPopup => GetCachedComponentInChildren<EditTaskPopup>();
+        private ListOfTasksPopup RemindersListPopup => GetCachedComponentInChildren<ListOfTasksPopup>();
 
         private void Start()
         {
@@ -30,10 +30,10 @@ namespace Hourly
             OpenPanelToEditThisTask(newTask);
         }
 
-        public void OpenPanelToEditThisTask(ReminderTask reminderTask)
+        public void OpenPanelToEditThisTask(ToDoTask reminderTask)
         {
             // Pass the task to popup
-            AddNewTaskPopup.Init(new AddNewTaskPopup.Data
+            EditTaskPopup.Init(new EditTaskPopup.Data
             {
                 OnFinishClicked = task =>
                 {
@@ -49,16 +49,16 @@ namespace Hourly
             });
 
             RemindersListPopup.Close();
-            AddNewTaskPopup.Show();
+            EditTaskPopup.Show();
         }
 
-        public void AddOrUpdateTask(ReminderTask task)
+        public void AddOrUpdateTask(ToDoTask task)
         {
             // Save task
             TaskManager.AddOrUpdateTask(task);
         }
 
-        public async void OnTaskComplete(ReminderTask task)
+        public async void OnTaskComplete(ToDoTask task)
         {
             // Handle completing a task
             var childTask = TaskManager.TaskCompleteStateChanged(task);
@@ -67,7 +67,7 @@ namespace Hourly
             await RemindersListPopup.AddJustThisTask(childTask);
         }
 
-        private void OnTaskDeleted(ReminderTask task)
+        private void OnTaskDeleted(ToDoTask task)
         {
             // Remove task
             TaskManager.RemoveTask(task.TaskIndex);
@@ -75,9 +75,9 @@ namespace Hourly
 
         private async void ShowAllTaskPopup()
         {
-            await RemindersListPopup.Init(new RemindersListPopup.Data {AllTasks = Prefs.UserProfile.AllReminderTasks});
+            await RemindersListPopup.Init(new ListOfTasksPopup.Data {AllTasks = Prefs.UserProfile.AllReminderTasks});
             RemindersListPopup.Show();
-            AddNewTaskPopup.Close();
+            EditTaskPopup.Close();
         }
 
         private void OnApplicationFocus(bool hasFocus)

@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d6d9c3bd49c44edba921bc415f307de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reminderTaskPrefab: {fileID: 3210244484208630628, guid: 284ca4af329ee4c339444f8894d807f5, type: 3}
+  toDoTaskPrefab: {fileID: 3210244484208630628, guid: 284ca4af329ee4c339444f8894d807f5, type: 3}
 --- !u!1 &6417313043863105811
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,11 +1,11 @@
 namespace Hourly.ToDo
 {
-    public class ReminderTask
+    public class ToDoTask
     {
         public string Title;
         public string Note;
         public int GroupIndex;
-        public ReminderNotificationData ReminderNotificationTime;
+        public ToDoTaskRemindMeData ReminderNotificationTime;
         public bool IsDone;
         public int TaskIndex;
         public int ParentIndex;

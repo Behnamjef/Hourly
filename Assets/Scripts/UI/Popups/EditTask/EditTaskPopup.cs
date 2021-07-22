@@ -8,26 +8,26 @@ using UnityEngine;
 
 namespace Hourly.UI
 {
-    public class AddNewTaskPopup : Popup
+    public class EditTaskPopup : Popup
     {
         [SerializeField] private TMP_InputField _titleInputField;
         [SerializeField] private TMP_InputField _noteInputField;
 
         private DateSelector DateSelector => GetCachedComponentInChildren<DateSelector>();
 
-        private NotificationTimeSection NotificationTimeSection =>
-            GetCachedComponentInChildren<NotificationTimeSection>();
+        private EditTaskRemindMeSection EditTaskRemindMeSection =>
+            GetCachedComponentInChildren<EditTaskRemindMeSection>();
 
         private Data _data;
 
-        private ReminderTask _reminderTask;
+        private ToDoTask _reminderTask;
 
         public override async Task Init(IPopupData data)
         {
             await base.Init(data);
             _data = data as Data;
             DateSelector.OnDateSelected = OnDateSelected;
-            _reminderTask = _data?.ReminderTask ?? new ReminderTask();
+            _reminderTask = _data?.ReminderTask ?? new ToDoTask();
             FillContent();
         }
 
@@ -35,15 +35,15 @@ namespace Hourly.UI
         {
             _titleInputField.text = _reminderTask.Title;
             _noteInputField.text = _reminderTask.Note;
-            NotificationTimeSection.Init(_reminderTask);
+            EditTaskRemindMeSection.Init(_reminderTask);
         }
 
         private void OnDateSelected(DateTime reminderDate)
         {
-            _reminderTask.ReminderNotificationTime ??= new ReminderNotificationData();
+            _reminderTask.ReminderNotificationTime ??= new ToDoTaskRemindMeData();
             
             _reminderTask.ReminderNotificationTime.NotificationTime = reminderDate;
-            NotificationTimeSection.SetDate(reminderDate);
+            EditTaskRemindMeSection.SetDate(reminderDate);
         }
 
         protected override async void OnShow()
@@ -64,7 +64,7 @@ namespace Hourly.UI
         {
             _reminderTask.Title = _titleInputField.text;
             _reminderTask.Note = _noteInputField.text;
-            _reminderTask.ReminderNotificationTime = NotificationTimeSection.GetSelectedNotificationTime();
+            _reminderTask.ReminderNotificationTime = EditTaskRemindMeSection.GetSelectedNotificationTime();
             _data.OnFinishClicked?.Invoke(_reminderTask);
 
             Close();
@@ -79,15 +79,15 @@ namespace Hourly.UI
 
         public void ShowCalendar()
         {
-            DateSelector.ShowCalendar(NotificationTimeSection.GetSelectedNotificationTime()?.NotificationTime ??
+            DateSelector.ShowCalendar(EditTaskRemindMeSection.GetSelectedNotificationTime()?.NotificationTime ??
                                       TimeProvider.GetCurrentTime());
         }
 
         public class Data : IPopupData
         {
-            public Action<ReminderTask> OnFinishClicked;
-            public Action<ReminderTask> OnDeleteClicked;
-            public ReminderTask ReminderTask;
+            public Action<ToDoTask> OnFinishClicked;
+            public Action<ToDoTask> OnDeleteClicked;
+            public ToDoTask ReminderTask;
         }
     }
 }

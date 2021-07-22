@@ -11,7 +11,7 @@ namespace Hourly.Notification
     {
         private const string REMINDER_CHANNEL_NAME = "Reminders";
 
-        public void SetupNotifications(ReminderTask[] allTasks)
+        public void SetupNotifications(ToDoTask[] allTasks)
         {
             AndroidNotificationCenter.CancelAllNotifications();
             if (allTasks.IsNullOrEmpty()) return;

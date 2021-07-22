@@ -5,12 +5,12 @@ namespace Hourly.Profile
 {
     public class UserProfile
     {
-        public List<ReminderTask> AllReminderTasks;
+        public List<ToDoTask> AllReminderTasks;
         public int LastTaskIndex;
 
         public UserProfile()
         {
-            AllReminderTasks = new List<ReminderTask>();
+            AllReminderTasks = new List<ToDoTask>();
         }
     }
 }

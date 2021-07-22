@@ -8,20 +8,20 @@ using UnityEngine.UI;
 
 namespace Hourly.UI
 {
-    public class RemindersListPopup : Popup
+    public class ListOfTasksPopup : Popup
     {
-        [SerializeField] private ReminderTaskCell reminderTaskPrefab;
+        [SerializeField] private ToDoTaskCell toDoTaskPrefab;
         private ScrollRect Scroll => GetCachedComponentInChildren<ScrollRect>();
         private Transform Contents => Scroll.content;
 
-        private List<ReminderTaskCell> _reminderTaskCells = new List<ReminderTaskCell>();
+        private List<ToDoTaskCell> _reminderTaskCells = new List<ToDoTaskCell>();
 
         public override async Task Init(IPopupData data)
         {
             await base.Init(data);
 
             ClearList();
-            _reminderTaskCells = new List<ReminderTaskCell>();
+            _reminderTaskCells = new List<ToDoTaskCell>();
 
             var allTask = (data as Data)?.AllTasks;
             if (allTask.IsNullOrEmpty())
@@ -42,7 +42,7 @@ namespace Hourly.UI
             }
         }
 
-        public async Task AddJustThisTask(ReminderTask task)
+        public async Task AddJustThisTask(ToDoTask task)
         {
             var nextTaskIndex = _reminderTaskCells.FirstOrDefault(t => t.ReminderTask.ReminderNotificationTime?.NotificationTime > task.ReminderNotificationTime?.NotificationTime)?.transform
                 .GetSiblingIndex() ?? _reminderTaskCells.Count;
@@ -71,14 +71,14 @@ namespace Hourly.UI
             _reminderTaskCells.Clear();
         }
 
-        public async void AddNewTask(ReminderTask task)
+        public async void AddNewTask(ToDoTask task)
         {
             await CreateTask(task);
         }
 
-        private async Task<ReminderTaskCell> CreateTask(ReminderTask task)
+        private async Task<ToDoTaskCell> CreateTask(ToDoTask task)
         {
-            var t = Instantiate(reminderTaskPrefab, Contents);
+            var t = Instantiate(toDoTaskPrefab, Contents);
             t.Init(new CellData
             {
                 Reminder = task,
@@ -92,7 +92,7 @@ namespace Hourly.UI
 
         public class Data : IPopupData
         {
-            public List<ReminderTask> AllTasks;
+            public List<ToDoTask> AllTasks;
         }
 
         // private void OnGUI()

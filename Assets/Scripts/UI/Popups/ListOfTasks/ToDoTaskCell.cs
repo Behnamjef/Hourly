@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 namespace Hourly.ToDo
 {
-    public class ReminderTaskCell : CommonUiBehaviour
+    public class ToDoTaskCell : CommonUiBehaviour
     {
-        public ReminderTask ReminderTask => _data.Reminder;
+        public ToDoTask ReminderTask => _data.Reminder;
         private ReminderTextGroup TextGroup => GetCachedComponentInChildren<ReminderTextGroup>();
         private Toggle Toggle => GetCachedComponentInChildren<Toggle>();
 
@@ -38,8 +38,8 @@ namespace Hourly.ToDo
 
     public class CellData
     {
-        public ReminderTask Reminder;
-        public Action<ReminderTask> OnTaskClicked;
-        public Action<ReminderTask> OnTaskComplete;
+        public ToDoTask Reminder;
+        public Action<ToDoTask> OnTaskClicked;
+        public Action<ToDoTask> OnTaskComplete;
     }
 }

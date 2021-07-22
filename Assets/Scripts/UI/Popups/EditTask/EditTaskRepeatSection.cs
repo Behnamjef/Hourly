@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Hourly.ToDo;
 using Hourly.Utils;
 using TMPro;
 
-namespace Hourly.ToDo
+namespace Hourly.UI
 {
-    public class RepeatSection : CommonUiBehaviour
+    public class EditTaskRepeatSection : CommonUiBehaviour
     {
         private TMP_Dropdown Dropdown => GetCachedComponentInChildren<TMP_Dropdown>();
         private FillData _data;
