@@ -40,9 +40,6 @@ namespace Hourly.UI
 
         private void OnDateSelected(DateTime reminderDate)
         {
-            _reminderTask.ReminderNotificationTime ??= new ToDoTaskRemindMeData();
-            
-            _reminderTask.ReminderNotificationTime.NotificationTime = reminderDate;
             EditTaskRemindMeSection.SetDate(reminderDate);
         }
 
@@ -64,7 +61,7 @@ namespace Hourly.UI
         {
             _reminderTask.Title = _titleInputField.text;
             _reminderTask.Note = _noteInputField.text;
-            _reminderTask.ReminderNotificationTime = EditTaskRemindMeSection.GetSelectedNotificationTime();
+            _reminderTask.RemindMeData = EditTaskRemindMeSection.CurrentRemindMeData;
             _data.OnFinishClicked?.Invoke(_reminderTask);
 
             Close();
@@ -79,7 +76,7 @@ namespace Hourly.UI
 
         public void ShowCalendar()
         {
-            DateSelector.ShowCalendar(EditTaskRemindMeSection.GetSelectedNotificationTime()?.NotificationTime ??
+            DateSelector.ShowCalendar(EditTaskRemindMeSection.CurrentRemindMeData?.NotificationTime ??
                                       TimeProvider.GetCurrentTime());
         }
 

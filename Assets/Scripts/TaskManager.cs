@@ -16,8 +16,8 @@ namespace Hourly
         public static ToDoTask TaskCompleteStateChanged(ToDoTask task)
         {
             // The done state change on cell class
-            if (!task.IsDone || task.ReminderNotificationTime?.RepeatData == null ||
-                task.ReminderNotificationTime.RepeatData.RepeatType == RepeatType.Never) return null;
+            if (!task.IsDone || task.RemindMeData == null ||
+                task.RemindMeData.RepeatType == RepeatType.Never) return null;
 
             var childTask = Prefs.UserProfile.AllReminderTasks.Find(t => t.ParentIndex == task.TaskIndex);
             if (childTask != null) return null;
@@ -25,14 +25,14 @@ namespace Hourly
             var notificationTime = new ToDoTaskRemindMeData
             {
                 NotificationTime = GetNextRepeatTime(task),
-                RepeatData = task.ReminderNotificationTime?.RepeatData
+                RepeatType = task.RemindMeData.RepeatType
             };
             
             childTask = new ToDoTask
             {
                 ParentIndex = task.TaskIndex,
                 TaskIndex = GetNewTask().TaskIndex,
-                ReminderNotificationTime = notificationTime,
+                RemindMeData = notificationTime,
                 IsDone = false,
 
                 Title = task.Title,
@@ -59,13 +59,13 @@ namespace Hourly
 
         private static DateTime? GetNextRepeatTime(ToDoTask task)
         {
-            return task.ReminderNotificationTime.RepeatData.RepeatType switch
+            return task.RemindMeData.RepeatType switch
             {
                 RepeatType.Never => null,
-                RepeatType.Daily => task.ReminderNotificationTime.NotificationTime?.AddDays(1),
-                RepeatType.Weekly => task.ReminderNotificationTime.NotificationTime?.AddDays(7),
-                RepeatType.Monthly => task.ReminderNotificationTime.NotificationTime?.AddMonths(1),
-                RepeatType.Yearly => task.ReminderNotificationTime.NotificationTime?.AddYears(1),
+                RepeatType.Daily => task.RemindMeData.NotificationTime?.AddDays(1),
+                RepeatType.Weekly => task.RemindMeData.NotificationTime?.AddDays(7),
+                RepeatType.Monthly => task.RemindMeData.NotificationTime?.AddMonths(1),
+                RepeatType.Yearly => task.RemindMeData.NotificationTime?.AddYears(1),
                 RepeatType.Custom => null,
                 _ => null
             };

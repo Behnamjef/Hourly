@@ -5,7 +5,7 @@ namespace Hourly.ToDo
         public string Title;
         public string Note;
         public int GroupIndex;
-        public ToDoTaskRemindMeData ReminderNotificationTime;
+        public ToDoTaskRemindMeData RemindMeData;
         public bool IsDone;
         public int TaskIndex;
         public int ParentIndex;

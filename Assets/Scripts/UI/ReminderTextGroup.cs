@@ -13,10 +13,10 @@ namespace Hourly.UI
 
         public async Task FillTexts(ToDoTask task)
         {
-            var time = task.ReminderNotificationTime?.NotificationTime?.ToString(TimeProvider.GENRAL_TIME_FORMAT);
+            var time = task.RemindMeData?.NotificationTime?.ToString(TimeProvider.GENRAL_TIME_FORMAT);
+            _timeText.text = time ?? "";
             _titleText.text = task.Title;
             _noteText.text = task.Note;
-            _timeText.text = time ?? "";
         }
     }
 }

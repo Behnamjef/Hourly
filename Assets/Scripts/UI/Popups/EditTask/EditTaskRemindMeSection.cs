@@ -13,21 +13,15 @@ namespace Hourly.UI
         [SerializeField] private EditTaskRepeatSection RepeatSection;
         private CustomText ReminderTimeText => TimeSection.GetCachedComponentInChildren<CustomText>();
 
-        private ToDoTaskRemindMeData currentNotifData;
+        public ToDoTaskRemindMeData CurrentRemindMeData { private set; get; }
 
         public void Init(ToDoTask reminderTask)
         {
             Toggle.onValueChanged.AddListener(ToggleValueChanged);
-            Toggle.isOn = reminderTask.ReminderNotificationTime?.NotificationTime != null;
-            ActivateTimeSection(Toggle.isOn);
+            CurrentRemindMeData = reminderTask.RemindMeData;
 
-            if (reminderTask.ReminderNotificationTime?.NotificationTime == null)
-            {
-                return;
-            }
-
-            SetDate((DateTime) reminderTask.ReminderNotificationTime?.NotificationTime);
-            SetRepeat(reminderTask.ReminderNotificationTime.RepeatData.RepeatType);
+            Toggle.isOn = CurrentRemindMeData != null;
+            ToggleValueChanged(Toggle.isOn);
         }
 
         private void ToggleValueChanged(bool isOn)
@@ -35,18 +29,20 @@ namespace Hourly.UI
             ActivateTimeSection(isOn);
             if (isOn)
             {
-                SetDate(TimeProvider.GetCurrentTime());
-                SetRepeat(RepeatType.Never);
+                CurrentRemindMeData ??= new ToDoTaskRemindMeData
+                    {NotificationTime = TimeProvider.GetCurrentTime(), RepeatType = RepeatType.Never};
+
+                SetDate((DateTime) CurrentRemindMeData.NotificationTime);
+                SetRepeat(CurrentRemindMeData.RepeatType);
             }
             else
-                currentNotifData = null;
+                CurrentRemindMeData = null;
         }
 
         public void SetDate(DateTime notifyTime)
         {
-            currentNotifData ??= new ToDoTaskRemindMeData();
-            
-            currentNotifData.NotificationTime = notifyTime;
+            CurrentRemindMeData.NotificationTime = notifyTime;
+
             ReminderTimeText.text = notifyTime.ToString(TimeProvider.GENRAL_TIME_FORMAT);
         }
 
@@ -61,7 +57,7 @@ namespace Hourly.UI
 
         private void OnRepeatTypeChanged(RepeatType repeatType)
         {
-            currentNotifData.RepeatData = new ReminderRepeatingData(repeatType);
+            CurrentRemindMeData.RepeatType = repeatType;
         }
 
         private void ActivateTimeSection(bool isActive)
@@ -73,11 +69,6 @@ namespace Hourly.UI
         private void OnDisable()
         {
             Toggle.onValueChanged.RemoveAllListeners();
-        }
-
-        public ToDoTaskRemindMeData GetSelectedNotificationTime()
-        {
-            return currentNotifData;
         }
     }
 }

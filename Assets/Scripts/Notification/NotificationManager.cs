@@ -16,7 +16,7 @@ namespace Hourly.Notification
             AndroidNotificationCenter.CancelAllNotifications();
             if (allTasks.IsNullOrEmpty()) return;
 
-            allTasks = allTasks.Where(t => t.ReminderNotificationTime?.NotificationTime != null && t.ReminderNotificationTime.NotificationTime > TimeProvider.GetCurrentTime()).ToArray();
+            allTasks = allTasks.Where(t => t.RemindMeData?.NotificationTime != null && t.RemindMeData.NotificationTime > TimeProvider.GetCurrentTime()).ToArray();
 
             var channel = new AndroidNotificationChannel()
             {
@@ -29,13 +29,13 @@ namespace Hourly.Notification
             AndroidNotificationCenter.RegisterNotificationChannel(channel);
 
 
-            foreach (var task in allTasks.Where(t => !t.IsDone && t.ReminderNotificationTime?.NotificationTime != null))
+            foreach (var task in allTasks.Where(t => !t.IsDone && t.RemindMeData?.NotificationTime != null))
             {
                 var notification = new AndroidNotification
                 {
                     Title = task.Title,
                     Text = task.Note,
-                    FireTime = task.ReminderNotificationTime?.NotificationTime ?? new DateTime(),
+                    FireTime = task.RemindMeData?.NotificationTime ?? new DateTime(),
                     UsesStopwatch = true,
                 };
 

@@ -30,11 +30,11 @@ namespace Hourly.UI
             allTask = allTask.Where(t => !t.IsDone).ToList();
             allTask.Sort((t1, t2) =>
             {
-                if (t1?.ReminderNotificationTime?.NotificationTime == null)
+                if (t1?.RemindMeData?.NotificationTime == null)
                     return 1;
-                if (t2?.ReminderNotificationTime?.NotificationTime == null)
+                if (t2?.RemindMeData?.NotificationTime == null)
                     return -1;
-                return (int) t1.ReminderNotificationTime.NotificationTime?.CompareTo(t2.ReminderNotificationTime.NotificationTime);
+                return (int) t1.RemindMeData.NotificationTime?.CompareTo(t2.RemindMeData.NotificationTime);
             });
             foreach (var t in allTask)
             {
@@ -44,11 +44,12 @@ namespace Hourly.UI
 
         public async Task AddJustThisTask(ToDoTask task)
         {
-            var nextTaskIndex = _reminderTaskCells.FirstOrDefault(t => t.ReminderTask.ReminderNotificationTime?.NotificationTime > task.ReminderNotificationTime?.NotificationTime)?.transform
+            var nextTaskIndex = _reminderTaskCells.FirstOrDefault(t =>
+                    t.ReminderTask.RemindMeData?.NotificationTime > task.RemindMeData?.NotificationTime)?.transform
                 .GetSiblingIndex() ?? _reminderTaskCells.Count;
             var newTask = await CreateTask(task);
             newTask.transform.SetSiblingIndex(nextTaskIndex);
-            
+
             await RebuildAllRects();
         }
 
@@ -94,14 +95,5 @@ namespace Hourly.UI
         {
             public List<ToDoTask> AllTasks;
         }
-
-        // private void OnGUI()
-        // {
-        //     if (GUI.Button(new Rect(0, 0, 100, 100),""))
-        //     {
-        //         RebuildAllRects();
-        //
-        //     }
-        // }
     }
 }
