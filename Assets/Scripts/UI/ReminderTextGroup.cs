@@ -1,6 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using Hourly.Time;
 using Hourly.ToDo;
+using Hourly.Utils;
 using UnityEngine;
 
 namespace Hourly.UI
@@ -17,11 +19,11 @@ namespace Hourly.UI
         public async Task FillTexts(ToDoTask task)
         {
             var time = task.RemindMeData?.NotificationTime;
-            var timeText = time?.ToString(TimeProvider.GENRAL_TIME_FORMAT);
+            var timeText = time != null ? TimeProvider.GetDateFriendlyName((DateTime) time) : "";
             var repeat = task.RemindMeData?.RepeatType ?? RepeatType.Never;
-            var repeatText = repeat != RepeatType.Never ? " ," + repeat : "";
+            var repeatText = repeat != RepeatType.Never ? ", " + repeat : "";
 
-            _timeText.text = timeText != null ? timeText + repeatText : "";
+            _timeText.text = !timeText.IsNullOrEmpty() ? timeText + repeatText : "";
             _titleText.text = task.Title;
             _noteText.text = task.Note;
 
