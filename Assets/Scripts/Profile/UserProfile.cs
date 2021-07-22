@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Hourly.ToDo;
 
 namespace Hourly.Profile
 {
@@ -6,7 +7,6 @@ namespace Hourly.Profile
     {
         public List<ReminderTask> AllReminderTasks;
         public int LastTaskIndex;
-
 
         public UserProfile()
         {

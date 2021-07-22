@@ -1,4 +1,4 @@
-﻿namespace Hourly.Repeat
+﻿namespace Hourly.ToDo
 {
     public enum RepeatType
     {

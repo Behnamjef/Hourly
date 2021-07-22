@@ -1,6 +1,6 @@
 using System;
 
-namespace Hourly
+namespace Hourly.ToDo
 {
     public class ReminderNotificationData
     {

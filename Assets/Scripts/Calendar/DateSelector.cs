@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Hourly;
 using Hourly.Time;
 using Hourly.UI;
-using TMPro;
+using Hourly.Utils;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;

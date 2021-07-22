@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hourly
+namespace Hourly.Utils
 {
     public static class Extensions
     {

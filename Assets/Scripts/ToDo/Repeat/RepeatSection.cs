@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Hourly.Utils;
 using TMPro;
-using UnityEngine.UI;
 
-namespace Hourly.Repeat
+namespace Hourly.ToDo
 {
     public class RepeatSection : CommonUiBehaviour
     {

@@ -1,8 +1,9 @@
 using System;
 using System.Linq;
 using Hourly.Time;
+using Hourly.ToDo;
+using Hourly.Utils;
 using Unity.Notifications.Android;
-using UnityEngine;
 
 namespace Hourly.Notification
 {

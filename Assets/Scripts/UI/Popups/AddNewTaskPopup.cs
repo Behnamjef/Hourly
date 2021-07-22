@@ -1,9 +1,8 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Hourly.Calendar;
-using Hourly.Repeat;
 using Hourly.Time;
+using Hourly.ToDo;
 using TMPro;
 using UnityEngine;
 

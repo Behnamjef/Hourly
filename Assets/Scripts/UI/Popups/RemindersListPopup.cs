@@ -1,7 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hourly.ToDo;
+using Hourly.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -1,10 +1,8 @@
 using System;
-using System.Threading.Tasks;
 using Hourly.UI;
-using UnityEngine;
 using UnityEngine.UI;
 
-namespace Hourly
+namespace Hourly.ToDo
 {
     public class ReminderTaskCell : CommonUiBehaviour
     {

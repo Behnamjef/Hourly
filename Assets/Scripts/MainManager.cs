@@ -1,8 +1,8 @@
-using System;
-using System.Linq;
 using Hourly.Notification;
+using Hourly.Profile;
+using Hourly.ToDo;
 using Hourly.UI;
-using Newtonsoft.Json;
+using Hourly.Utils;
 
 namespace Hourly
 {

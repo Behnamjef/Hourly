@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
-using Hourly.Repeat;
+using Hourly.Profile;
+using Hourly.ToDo;
 
 namespace Hourly
 {

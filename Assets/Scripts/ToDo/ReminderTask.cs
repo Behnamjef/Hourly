@@ -1,7 +1,4 @@
-using System;
-using Hourly.Repeat;
-
-namespace Hourly
+namespace Hourly.ToDo
 {
     public class ReminderTask
     {

@@ -1,6 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using DG.Tweening;
+using Hourly.Utils;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
