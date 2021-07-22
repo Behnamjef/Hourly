@@ -36,7 +36,7 @@ namespace Hourly.Notification
                     Title = task.Title,
                     Text = task.Note,
                     FireTime = task.RemindMeData?.NotificationTime ?? new DateTime(),
-                    UsesStopwatch = true,
+                    ShowTimestamp = true,
                 };
 
                 AndroidNotificationCenter.SendNotification(notification, task.GroupIndex.ToString());

@@ -535,7 +535,7 @@ MonoBehaviour:
     shown: 0
   - name: EditTaskRemindMeSection
     shown: 0
-  - name: RepeatSection
+  - name: EditTaskRepeatSection
     shown: 0
   - name: ListOfTasksPopup
     shown: 0
