@@ -14,14 +14,14 @@ namespace Hourly.UI
         private ScrollRect Scroll => GetCachedComponentInChildren<ScrollRect>();
         private Transform Contents => Scroll.content;
 
-        private List<ToDoTaskCell> _reminderTaskCells = new List<ToDoTaskCell>();
+        private List<ToDoTaskCell> _toDoTaskCells = new List<ToDoTaskCell>();
 
         public override async Task Init(IPopupData data)
         {
             await base.Init(data);
 
             ClearList();
-            _reminderTaskCells = new List<ToDoTaskCell>();
+            _toDoTaskCells = new List<ToDoTaskCell>();
 
             var allTask = (data as Data)?.AllTasks;
             if (allTask.IsNullOrEmpty())
@@ -44,9 +44,9 @@ namespace Hourly.UI
 
         public async Task AddJustThisTask(ToDoTask task)
         {
-            var nextTaskIndex = _reminderTaskCells.FirstOrDefault(t =>
-                    t.ReminderTask.RemindMeData?.NotificationTime > task.RemindMeData?.NotificationTime)?.transform
-                .GetSiblingIndex() ?? _reminderTaskCells.Count;
+            var nextTaskIndex = _toDoTaskCells.FirstOrDefault(t =>
+                    t.ToDoTask.RemindMeData?.NotificationTime > task.RemindMeData?.NotificationTime)?.transform
+                .GetSiblingIndex() ?? _toDoTaskCells.Count;
             var newTask = await CreateTask(task);
             newTask.transform.SetSiblingIndex(nextTaskIndex);
 
@@ -62,14 +62,14 @@ namespace Hourly.UI
 
         public void ClearList()
         {
-            if (_reminderTaskCells.IsNullOrEmpty()) return;
+            if (_toDoTaskCells.IsNullOrEmpty()) return;
 
-            for (int i = _reminderTaskCells.Count - 1; i >= 0; i--)
+            for (int i = _toDoTaskCells.Count - 1; i >= 0; i--)
             {
-                Destroy(_reminderTaskCells[i].gameObject);
+                Destroy(_toDoTaskCells[i].gameObject);
             }
 
-            _reminderTaskCells.Clear();
+            _toDoTaskCells.Clear();
         }
 
         public async void AddNewTask(ToDoTask task)
@@ -82,12 +82,12 @@ namespace Hourly.UI
             var t = Instantiate(toDoTaskPrefab, Contents);
             t.Init(new CellData
             {
-                Reminder = task,
+                ToDoTask = task,
                 OnTaskClicked = rt => MainManager.Instance.OpenPanelToEditThisTask(rt),
                 OnTaskComplete = rt => MainManager.Instance.OnTaskComplete(rt)
             });
 
-            _reminderTaskCells.Add(t);
+            _toDoTaskCells.Add(t);
             return t;
         }
 

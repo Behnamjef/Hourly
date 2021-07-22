@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Hourly.Calendar;
 using Hourly.Time;
 using Hourly.ToDo;
+using Hourly.Utils;
 using TMPro;
 using UnityEngine;
 
@@ -20,56 +21,66 @@ namespace Hourly.UI
 
         private Data _data;
 
-        private ToDoTask _reminderTask;
+        private ToDoTask _toDoTask;
 
         public override async Task Init(IPopupData data)
         {
             await base.Init(data);
+            
             _data = data as Data;
+            
+            // On new date selected
             DateSelector.OnDateSelected = OnDateSelected;
-            _reminderTask = _data?.ReminderTask ?? new ToDoTask();
+            
+            // Remind me data
+            _toDoTask = _data?.ToDoTask ?? new ToDoTask();
+            
+            // Fill texts if editing a task
             FillContent();
         }
 
+        // Fill content of popup
         private void FillContent()
         {
-            _titleInputField.text = _reminderTask.Title;
-            _noteInputField.text = _reminderTask.Note;
-            EditTaskRemindMeSection.Init(_reminderTask);
+            // Fill texts
+            _titleInputField.text = _toDoTask.Title;
+            _noteInputField.text = _toDoTask.Note;
+            
+            // Fill remind me section
+            EditTaskRemindMeSection.Init(_toDoTask);
         }
 
+        // When a date selected in calendar
         private void OnDateSelected(DateTime reminderDate)
         {
             EditTaskRemindMeSection.SetDate(reminderDate);
         }
 
+        // On show panel
         protected override async void OnShow()
         {
             base.OnShow();
-            _titleInputField.Select();
+            
+            // If title is empty automatically select it to edit
+            if(_titleInputField.text.IsNullOrEmpty())
+                _titleInputField.Select();
+            
             await RebuildAllRects();
-        }
-
-        protected override void OnHide()
-        {
-            base.OnHide();
-            _titleInputField.text = "";
-            _noteInputField.text = "";
         }
 
         public void DoneEditing()
         {
-            _reminderTask.Title = _titleInputField.text;
-            _reminderTask.Note = _noteInputField.text;
-            _reminderTask.RemindMeData = EditTaskRemindMeSection.CurrentRemindMeData;
-            _data.OnFinishClicked?.Invoke(_reminderTask);
+            _toDoTask.Title = _titleInputField.text;
+            _toDoTask.Note = _noteInputField.text;
+            _toDoTask.RemindMeData = EditTaskRemindMeSection.CurrentRemindMeData;
+            _data.OnFinishClicked?.Invoke(_toDoTask);
 
             Close();
         }
 
         public void DeleteTask()
         {
-            _data.OnDeleteClicked?.Invoke(_reminderTask);
+            _data.OnDeleteClicked?.Invoke(_toDoTask);
 
             Close();
         }
@@ -84,7 +95,7 @@ namespace Hourly.UI
         {
             public Action<ToDoTask> OnFinishClicked;
             public Action<ToDoTask> OnDeleteClicked;
-            public ToDoTask ReminderTask;
+            public ToDoTask ToDoTask;
         }
     }
 }

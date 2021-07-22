@@ -15,10 +15,10 @@ namespace Hourly.UI
 
         public ToDoTaskRemindMeData CurrentRemindMeData { private set; get; }
 
-        public void Init(ToDoTask reminderTask)
+        public void Init(ToDoTask toDoTask)
         {
             Toggle.onValueChanged.AddListener(ToggleValueChanged);
-            CurrentRemindMeData = reminderTask.RemindMeData;
+            CurrentRemindMeData = toDoTask.RemindMeData;
 
             Toggle.isOn = CurrentRemindMeData != null;
             ToggleValueChanged(Toggle.isOn);

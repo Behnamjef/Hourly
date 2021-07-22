@@ -19,7 +19,7 @@ namespace Hourly
             if (!task.IsDone || task.RemindMeData == null ||
                 task.RemindMeData.RepeatType == RepeatType.Never) return null;
 
-            var childTask = Prefs.UserProfile.AllReminderTasks.Find(t => t.ParentIndex == task.TaskIndex);
+            var childTask = Prefs.UserProfile.AllToDoTasks.Find(t => t.ParentIndex == task.TaskIndex);
             if (childTask != null) return null;
 
             var notificationTime = new ToDoTaskRemindMeData
@@ -47,14 +47,14 @@ namespace Hourly
         public static void AddOrUpdateTask(ToDoTask task)
         {
             RemoveTask(task.TaskIndex);
-            Prefs.UserProfile.AllReminderTasks = Prefs.UserProfile.AllReminderTasks.Append(task).ToList();
+            Prefs.UserProfile.AllToDoTasks = Prefs.UserProfile.AllToDoTasks.Append(task).ToList();
         }
 
         public static void RemoveTask(int index)
         {
-            var currentTask = Prefs.UserProfile.AllReminderTasks?.Find(t => t.TaskIndex == index);
+            var currentTask = Prefs.UserProfile.AllToDoTasks?.Find(t => t.TaskIndex == index);
             if (currentTask != null)
-                Prefs.UserProfile.AllReminderTasks.Remove(currentTask);
+                Prefs.UserProfile.AllToDoTasks.Remove(currentTask);
         }
 
         private static DateTime? GetNextRepeatTime(ToDoTask task)

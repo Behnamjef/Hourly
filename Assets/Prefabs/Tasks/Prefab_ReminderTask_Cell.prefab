@@ -108,6 +108,8 @@ MonoBehaviour:
   _titleText: {fileID: 2239310891618408723}
   _noteText: {fileID: 3897216081538908210}
   _timeText: {fileID: 766365885817821471}
+  _normalTimeColor: {r: 0.9490196, g: 0.9607843, b: 0.83137256, a: 0.8666667}
+  _passedTimeColor: {r: 1, g: 0.32941177, b: 0.27058825, a: 0.8666667}
 --- !u!114 &1202232426533130931
 MonoBehaviour:
   m_ObjectHideFlags: 0

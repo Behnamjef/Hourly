@@ -10,7 +10,7 @@ namespace Hourly
     {
         // ToDo: Should be in the navigator class
         private EditTaskPopup EditTaskPopup => GetCachedComponentInChildren<EditTaskPopup>();
-        private ListOfTasksPopup RemindersListPopup => GetCachedComponentInChildren<ListOfTasksPopup>();
+        private ListOfTasksPopup ListOfTasksPopup => GetCachedComponentInChildren<ListOfTasksPopup>();
 
         private void Start()
         {
@@ -30,7 +30,7 @@ namespace Hourly
             OpenPanelToEditThisTask(newTask);
         }
 
-        public void OpenPanelToEditThisTask(ToDoTask reminderTask)
+        public void OpenPanelToEditThisTask(ToDoTask toDoTask)
         {
             // Pass the task to popup
             EditTaskPopup.Init(new EditTaskPopup.Data
@@ -45,10 +45,10 @@ namespace Hourly
                     OnTaskDeleted(task);
                     ShowAllTaskPopup();
                 },
-                ReminderTask = reminderTask
+                ToDoTask = toDoTask
             });
 
-            RemindersListPopup.Close();
+            ListOfTasksPopup.Close();
             EditTaskPopup.Show();
         }
 
@@ -64,7 +64,7 @@ namespace Hourly
             var childTask = TaskManager.TaskCompleteStateChanged(task);
             if (childTask == null) return;
 
-            await RemindersListPopup.AddJustThisTask(childTask);
+            await ListOfTasksPopup.AddJustThisTask(childTask);
         }
 
         private void OnTaskDeleted(ToDoTask task)
@@ -75,8 +75,8 @@ namespace Hourly
 
         private async void ShowAllTaskPopup()
         {
-            await RemindersListPopup.Init(new ListOfTasksPopup.Data {AllTasks = Prefs.UserProfile.AllReminderTasks});
-            RemindersListPopup.Show();
+            await ListOfTasksPopup.Init(new ListOfTasksPopup.Data {AllTasks = Prefs.UserProfile.AllToDoTasks});
+            ListOfTasksPopup.Show();
             EditTaskPopup.Close();
         }
 
@@ -94,10 +94,10 @@ namespace Hourly
 
         private static void SetupNotifications()
         {
-            if (Prefs.UserProfile.AllReminderTasks.IsNullOrEmpty())
+            if (Prefs.UserProfile.AllToDoTasks.IsNullOrEmpty())
                 return;
 
-            NotificationManager.Instance.SetupNotifications(Prefs.UserProfile.AllReminderTasks.ToArray());
+            NotificationManager.Instance.SetupNotifications(Prefs.UserProfile.AllToDoTasks.ToArray());
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Hourly.ToDo
 {
     public class ToDoTaskCell : CommonUiBehaviour
     {
-        public ToDoTask ReminderTask => _data.Reminder;
+        public ToDoTask ToDoTask => _data.ToDoTask;
         private ReminderTextGroup TextGroup => GetCachedComponentInChildren<ReminderTextGroup>();
         private Toggle Toggle => GetCachedComponentInChildren<Toggle>();
 
@@ -17,28 +17,28 @@ namespace Hourly.ToDo
         {
             _data = data;
 
-            Toggle.isOn = _data.Reminder.IsDone;
+            Toggle.isOn = _data.ToDoTask.IsDone;
             Toggle.onValueChanged.AddListener(OnValueChanged);
             
-            await TextGroup.FillTexts(_data.Reminder);
+            await TextGroup.FillTexts(_data.ToDoTask);
         }
         
         private void OnValueChanged(bool isDone)
         {
             // ToDo: Play animation or ...
-            _data.Reminder.IsDone = isDone;
-            _data.OnTaskComplete?.Invoke(_data.Reminder);
+            _data.ToDoTask.IsDone = isDone;
+            _data.OnTaskComplete?.Invoke(_data.ToDoTask);
         }
 
         public void TaskClicked()
         {
-            _data.OnTaskClicked?.Invoke(_data.Reminder);
+            _data.OnTaskClicked?.Invoke(_data.ToDoTask);
         }
     }
 
     public class CellData
     {
-        public ToDoTask Reminder;
+        public ToDoTask ToDoTask;
         public Action<ToDoTask> OnTaskClicked;
         public Action<ToDoTask> OnTaskComplete;
     }
