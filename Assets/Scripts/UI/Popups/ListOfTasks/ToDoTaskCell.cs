@@ -23,11 +23,12 @@ namespace Hourly.ToDo
             await TextGroup.FillTexts(_data.ToDoTask);
         }
         
-        private void OnValueChanged(bool isDone)
+        private async void OnValueChanged(bool isDone)
         {
             // ToDo: Play animation or ...
             _data.ToDoTask.IsDone = isDone;
             _data.OnTaskComplete?.Invoke(_data.ToDoTask);
+            await TextGroup.ChangeState(isDone);
         }
 
         public void TaskClicked()
