@@ -529,6 +529,8 @@ MonoBehaviour:
     shown: 0
   - name: MainManager
     shown: 0
+  - name: DevMode
+    shown: 0
   - name: CustomText
     shown: 0
   - name: EditTaskPopup

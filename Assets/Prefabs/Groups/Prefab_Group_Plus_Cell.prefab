@@ -556,7 +556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6405874236601107427, guid: 2d314ad08f46b4522a1c28b18b4dea91, type: 3}
       propertyPath: m_text
-      value: Add new task ...
+      value: Add new group ...
       objectReference: {fileID: 0}
     - target: {fileID: 6405874236601107427, guid: 2d314ad08f46b4522a1c28b18b4dea91, type: 3}
       propertyPath: m_fontSize
