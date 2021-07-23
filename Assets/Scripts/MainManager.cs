@@ -79,14 +79,14 @@ namespace Hourly
             TaskManager.RemoveTask(task.TaskIndex);
         }
 
-        private async void ShowAllGroupsPopup()
+        public async void ShowAllGroupsPopup()
         {
             var showData = new ListOfGroupsPopup.Data
             {
                 AllGroups = Prefs.UserProfile.AllGroups,
                 OnGroupCellClicked = g => ShowAllTaskPopup(g.Index)
             };
-            ListOfGroupsPopup.Init(showData);
+            await ListOfGroupsPopup.Init(showData);
             ListOfGroupsPopup.Show();
             ListOfTasksPopup.Close();
             EditTaskPopup.Close();

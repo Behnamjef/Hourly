@@ -12,7 +12,8 @@ namespace Hourly
 
         protected async Task RebuildAllRects()
         {
-            StartCoroutine(RebuildUI());
+            if(gameObject.activeInHierarchy)
+                StartCoroutine(RebuildUI());
         }
 
         private IEnumerator RebuildUI()

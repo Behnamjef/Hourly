@@ -12,10 +12,16 @@ namespace Hourly.UI
     public class ListOfGroupsPopup : Popup
     {
         [SerializeField] private ToDoGroupCell _groupCellPrefab;
-        private ToDoGroupPlusCell PlusCell => GetCachedComponentInChildren<ToDoGroupPlusCell>();
+        private ToDoGroupPlusCell PlusCell => GetCachedComponentInChildren<ToDoGroupPlusCell>(true);
 
         private ScrollRect Scroll => GetCachedComponentInChildren<ScrollRect>();
         private Transform Contents => Scroll.content;
+
+        private List<ToDoGroupCell> GroupCells
+        {
+            set => _groupCells = value;
+            get => _groupCells ??= new List<ToDoGroupCell>();
+        }
         private List<ToDoGroupCell> _groupCells;
 
         private Data _data;
@@ -28,7 +34,6 @@ namespace Hourly.UI
             PlusCell.Init(new ToDoGroupPlusCell.Data() {OnGroupCreated = AddNewGroupToList});
 
             ClearList();
-            _groupCells = new List<ToDoGroupCell>();
 
             var groups = _data.AllGroups;
             foreach (var doGroup in groups)
@@ -42,14 +47,15 @@ namespace Hourly.UI
         protected override async void OnShow()
         {
             base.OnShow();
-            await RebuildAllRects();
+            
+            MovePlusSectionToTheEnd();
         }
 
         private async Task CreateCell(ToDoGroup doGroup)
         {
             var group = Instantiate(_groupCellPrefab, Contents);
             await group.Init(new ToDoGroupCell.Data() {ToDoGroup = doGroup,OnGroupClicked = _data.OnGroupCellClicked});
-            _groupCells.Add(group);
+            GroupCells.Add(group);
         }
 
         public async void AddNewGroupToList(string name)
@@ -57,24 +63,25 @@ namespace Hourly.UI
             var group = GroupManager.CreateNewGroup(name);
             await CreateCell(group);
             MovePlusSectionToTheEnd();
-            await RebuildAllRects();
         }
 
-        private void MovePlusSectionToTheEnd()
+        private async void MovePlusSectionToTheEnd()
         {
-            PlusCell.transform.SetSiblingIndex(_groupCells.Count);
+            await Task.Delay(1);
+            PlusCell.transform.SetSiblingIndex(GroupCells.Count);
+            await RebuildAllRects();
         }
 
         public void ClearList()
         {
-            if (_groupCells.IsNullOrEmpty()) return;
+            if (GroupCells.IsNullOrEmpty()) return;
 
-            for (int i = _groupCells.Count - 1; i >= 0; i--)
+            for (int i = GroupCells.Count - 1; i >= 0; i--)
             {
-                Destroy(_groupCells[i].gameObject);
+                Destroy(GroupCells[i].gameObject);
             }
 
-            _groupCells.Clear();
+            GroupCells.Clear();
         }
 
 
