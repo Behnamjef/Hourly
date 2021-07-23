@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 8813967821819470277}
   - component: {fileID: 920572371854424066}
   m_Layer: 5
-  m_Name: Prefab_AddNewTask_Popup
+  m_Name: Prefab_EditTask_Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

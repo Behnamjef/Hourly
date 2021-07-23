@@ -11,6 +11,7 @@ namespace Hourly
         // ToDo: Should be in the navigator class
         private EditTaskPopup EditTaskPopup => GetCachedComponentInChildren<EditTaskPopup>();
         private ListOfTasksPopup ListOfTasksPopup => GetCachedComponentInChildren<ListOfTasksPopup>();
+        private ListOfGroupsPopup ListOfGroupsPopup => GetCachedComponentInChildren<ListOfGroupsPopup>();
 
         private void Start()
         {
@@ -20,7 +21,7 @@ namespace Hourly
         private void Init()
         {
             Prefs.LoadProfile();
-            ShowAllTaskPopup();
+            ShowAllGroupsPopup();
         }
 
         public void AddNewTask()
@@ -48,6 +49,7 @@ namespace Hourly
                 ToDoTask = toDoTask
             });
 
+            ListOfGroupsPopup.Close();
             ListOfTasksPopup.Close();
             EditTaskPopup.Show();
         }
@@ -73,9 +75,18 @@ namespace Hourly
             TaskManager.RemoveTask(task.TaskIndex);
         }
 
+        private async void ShowAllGroupsPopup()
+        {
+            ListOfGroupsPopup.Init(new ListOfGroupsPopup.Data {AllGroups = Prefs.UserProfile.AllGroups});
+            ListOfGroupsPopup.Show();
+            ListOfTasksPopup.Close();
+            EditTaskPopup.Close();
+        }
+
         private async void ShowAllTaskPopup()
         {
             await ListOfTasksPopup.Init(new ListOfTasksPopup.Data {AllTasks = Prefs.UserProfile.AllToDoTasks});
+            ListOfGroupsPopup.Close();
             ListOfTasksPopup.Show();
             EditTaskPopup.Close();
         }

@@ -537,6 +537,12 @@ MonoBehaviour:
     shown: 0
   - name: EditTaskRepeatSection
     shown: 0
+  - name: ListOfGroupsPopup
+    shown: 0
+  - name: ToDoGroupCell
+    shown: 0
+  - name: ToDoGroupPlusCell
+    shown: 0
   - name: ListOfTasksPopup
     shown: 0
   - name: Popup
