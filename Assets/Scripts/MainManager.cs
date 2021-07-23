@@ -1,3 +1,4 @@
+using System.Linq;
 using Hourly.Notification;
 using Hourly.Profile;
 using Hourly.ToDo;
@@ -13,6 +14,8 @@ namespace Hourly
         private ListOfTasksPopup ListOfTasksPopup => GetCachedComponentInChildren<ListOfTasksPopup>();
         private ListOfGroupsPopup ListOfGroupsPopup => GetCachedComponentInChildren<ListOfGroupsPopup>();
 
+        private int _currentGroupIndex;
+        
         private void Start()
         {
             Init();
@@ -28,6 +31,7 @@ namespace Hourly
         {
             // Create an empty task with right index
             var newTask = TaskManager.GetNewTask();
+            newTask.GroupIndex = _currentGroupIndex;
             OpenPanelToEditThisTask(newTask);
         }
 
@@ -39,12 +43,12 @@ namespace Hourly
                 OnFinishClicked = task =>
                 {
                     AddOrUpdateTask(task);
-                    ShowAllTaskPopup();
+                    ShowAllTaskPopup(task.GroupIndex);
                 },
                 OnDeleteClicked = task =>
                 {
                     OnTaskDeleted(task);
-                    ShowAllTaskPopup();
+                    ShowAllTaskPopup(task.GroupIndex);
                 },
                 ToDoTask = toDoTask
             });
@@ -77,15 +81,27 @@ namespace Hourly
 
         private async void ShowAllGroupsPopup()
         {
-            ListOfGroupsPopup.Init(new ListOfGroupsPopup.Data {AllGroups = Prefs.UserProfile.AllGroups});
+            var showData = new ListOfGroupsPopup.Data
+            {
+                AllGroups = Prefs.UserProfile.AllGroups,
+                OnGroupCellClicked = g => ShowAllTaskPopup(g.Index)
+            };
+            ListOfGroupsPopup.Init(showData);
             ListOfGroupsPopup.Show();
             ListOfTasksPopup.Close();
             EditTaskPopup.Close();
         }
 
-        private async void ShowAllTaskPopup()
+        private async void ShowAllTaskPopup(int groupIndex)
         {
-            await ListOfTasksPopup.Init(new ListOfTasksPopup.Data {AllTasks = Prefs.UserProfile.AllToDoTasks});
+            _currentGroupIndex = groupIndex;
+            var showData = new ListOfTasksPopup.Data
+            {
+                AllTasks = Prefs.UserProfile.AllToDoTasks.Where(task => task.GroupIndex == groupIndex).ToList(),
+                OnTaskCellClicked = OpenPanelToEditThisTask,
+                OnTaskCellComplete = OnTaskComplete
+            };
+            await ListOfTasksPopup.Init(showData);
             ListOfGroupsPopup.Close();
             ListOfTasksPopup.Show();
             EditTaskPopup.Close();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Hourly.UI
 
         private List<ToDoTaskCell> _toDoTaskCells = new List<ToDoTaskCell>();
 
+        private Data _data;
         public override async Task Init(IPopupData data)
         {
             await base.Init(data);
@@ -23,7 +25,8 @@ namespace Hourly.UI
             ClearList();
             _toDoTaskCells = new List<ToDoTaskCell>();
 
-            var allTask = (data as Data)?.AllTasks;
+            _data = data as Data;
+            var allTask = _data?.AllTasks;
             if (allTask.IsNullOrEmpty())
                 return;
 
@@ -83,8 +86,8 @@ namespace Hourly.UI
             t.Init(new CellData
             {
                 ToDoTask = task,
-                OnTaskClicked = rt => MainManager.Instance.OpenPanelToEditThisTask(rt),
-                OnTaskComplete = rt => MainManager.Instance.OnTaskComplete(rt)
+                OnTaskClicked = _data.OnTaskCellClicked,
+                OnTaskComplete = _data.OnTaskCellComplete
             });
 
             _toDoTaskCells.Add(t);
@@ -94,6 +97,8 @@ namespace Hourly.UI
         public class Data : IPopupData
         {
             public List<ToDoTask> AllTasks;
+            public Action<ToDoTask> OnTaskCellClicked;
+            public Action<ToDoTask> OnTaskCellComplete;
         }
     }
 }

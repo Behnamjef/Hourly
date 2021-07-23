@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hourly.Group;
@@ -47,7 +48,7 @@ namespace Hourly.UI
         private async Task CreateCell(ToDoGroup doGroup)
         {
             var group = Instantiate(_groupCellPrefab, Contents);
-            await group.Init(new ToDoGroupCell.Data() {ToDoGroup = doGroup});
+            await group.Init(new ToDoGroupCell.Data() {ToDoGroup = doGroup,OnGroupClicked = _data.OnGroupCellClicked});
             _groupCells.Add(group);
         }
 
@@ -80,6 +81,7 @@ namespace Hourly.UI
         public class Data : IPopupData
         {
             public List<ToDoGroup> AllGroups;
+            public Action<ToDoGroup> OnGroupCellClicked;
         }
     }
 }
