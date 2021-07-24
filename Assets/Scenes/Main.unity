@@ -789,6 +789,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Hourly.Utils.DevMode, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 6474820407856227752, guid: 132f58b565cbb4d3e8aa7854435976d7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 154.70001
+      objectReference: {fileID: 0}
     - target: {fileID: 7809056376494034359, guid: 132f58b565cbb4d3e8aa7854435976d7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

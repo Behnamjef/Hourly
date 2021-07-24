@@ -10,13 +10,17 @@ namespace Hourly.Notification
     public class NotificationManager : SingletonBehaviour<NotificationManager>
     {
         private const string REMINDER_CHANNEL_NAME = "Reminders";
+        private const string SMALL_ICON_NAME = "small_icon";
+        private const string LARGE_ICON_NAME = "large_icon";
 
         public void SetupNotifications(ToDoTask[] allTasks)
         {
             AndroidNotificationCenter.CancelAllNotifications();
             if (allTasks.IsNullOrEmpty()) return;
 
-            allTasks = allTasks.Where(t => t.RemindMeData?.NotificationTime != null && t.RemindMeData.NotificationTime > TimeProvider.GetCurrentTime()).ToArray();
+            allTasks = allTasks.Where(t =>
+                t.RemindMeData?.NotificationTime != null &&
+                t.RemindMeData.NotificationTime > TimeProvider.GetCurrentTime()).ToArray();
 
             var channel = new AndroidNotificationChannel()
             {
@@ -24,7 +28,8 @@ namespace Hourly.Notification
                 Name = REMINDER_CHANNEL_NAME,
                 Description = "Generic notifications",
                 CanShowBadge = true,
-                
+                Importance = Importance.High,
+                LockScreenVisibility = LockScreenVisibility.Public
             };
             AndroidNotificationCenter.RegisterNotificationChannel(channel);
 
@@ -34,12 +39,13 @@ namespace Hourly.Notification
                 var notification = new AndroidNotification
                 {
                     Title = task.Title,
-                    Text = task.Note,
                     FireTime = task.RemindMeData?.NotificationTime ?? new DateTime(),
                     ShowTimestamp = true,
+                    SmallIcon = SMALL_ICON_NAME,
+                    ShouldAutoCancel = false
                 };
 
-                AndroidNotificationCenter.SendNotification(notification, task.GroupIndex.ToString());
+                AndroidNotificationCenter.SendNotification(notification, REMINDER_CHANNEL_NAME);
             }
         }
     }
