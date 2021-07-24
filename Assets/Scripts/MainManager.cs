@@ -1,6 +1,7 @@
 using System.Linq;
 using Hourly.Notification;
 using Hourly.Profile;
+using Hourly.Time;
 using Hourly.ToDo;
 using Hourly.UI;
 using Hourly.Utils;
@@ -15,7 +16,7 @@ namespace Hourly
         private ListOfGroupsPopup ListOfGroupsPopup => GetCachedComponentInChildren<ListOfGroupsPopup>();
 
         private int _currentGroupIndex;
-        
+
         private void Start()
         {
             Init();
@@ -43,12 +44,12 @@ namespace Hourly
                 OnFinishClicked = task =>
                 {
                     AddOrUpdateTask(task);
-                    ShowAllTaskPopup(task.GroupIndex);
+                    ShowToDoListPopup(task.GroupIndex);
                 },
                 OnDeleteClicked = task =>
                 {
                     OnTaskDeleted(task);
-                    ShowAllTaskPopup(task.GroupIndex);
+                    ShowToDoListPopup(task.GroupIndex);
                 },
                 ToDoTask = toDoTask
             });
@@ -84,7 +85,7 @@ namespace Hourly
             var showData = new ListOfGroupsPopup.Data
             {
                 AllGroups = Prefs.UserProfile.AllGroups,
-                OnGroupCellClicked = g => ShowAllTaskPopup(g.Index)
+                OnGroupCellClicked = g => ShowToDoListPopup(g.Index)
             };
             await ListOfGroupsPopup.Init(showData);
             ListOfGroupsPopup.Show();
@@ -92,12 +93,16 @@ namespace Hourly
             EditTaskPopup.Close();
         }
 
-        private async void ShowAllTaskPopup(int groupIndex)
+        private async void ShowToDoListPopup(int groupIndex)
         {
             _currentGroupIndex = groupIndex;
             var showData = new ListOfTasksPopup.Data
             {
-                AllTasks = Prefs.UserProfile.AllToDoTasks.Where(task => task.GroupIndex == groupIndex).ToList(),
+                AllTasks = Prefs.UserProfile.AllToDoTasks.Where(task =>
+                        groupIndex == -1 ||
+                        task.GroupIndex == groupIndex || groupIndex == 0 &&
+                        task.RemindMeData != null && task.RemindMeData.NotificationTime.IsToday())
+                    .ToList(),
                 OnTaskCellClicked = OpenPanelToEditThisTask,
                 OnTaskCellComplete = OnTaskComplete
             };

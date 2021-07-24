@@ -35,11 +35,17 @@ namespace Hourly.UI
 
             ClearList();
 
+            var todayTasks = new ToDoGroup {Index = 0, Name = "-- Today Tasks --"};
+            await CreateCell(todayTasks);
+            
             var groups = _data.AllGroups;
             foreach (var doGroup in groups)
             {
                 await CreateCell(doGroup);
             }
+
+            var allToDoGroup = new ToDoGroup {Index = -1, Name = "* All ToDo Tasks *"};
+            await CreateCell(allToDoGroup);
             
             MovePlusSectionToTheEnd();
         }
