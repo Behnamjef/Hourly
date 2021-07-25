@@ -44,12 +44,12 @@ namespace Hourly
                 OnFinishClicked = task =>
                 {
                     AddOrUpdateTask(task);
-                    ShowToDoListPopup(task.GroupIndex);
+                    ShowToDoListPopup(_currentGroupIndex);
                 },
                 OnDeleteClicked = task =>
                 {
                     OnTaskDeleted(task);
-                    ShowToDoListPopup(task.GroupIndex);
+                    ShowToDoListPopup(_currentGroupIndex);
                 },
                 ToDoTask = toDoTask
             });
