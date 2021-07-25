@@ -30,7 +30,7 @@ namespace Hourly.UI
             if (isOn)
             {
                 CurrentRemindMeData ??= new ToDoTaskRemindMeData
-                    {NotificationTime = TimeProvider.GetCurrentTime(), RepeatType = RepeatType.Never};
+                    {NotificationTime = TimeProvider.GetCurrentTime().AddMinutes(1), RepeatType = RepeatType.Never};
 
                 SetDate((DateTime) CurrentRemindMeData.NotificationTime);
                 SetRepeat(CurrentRemindMeData.RepeatType);

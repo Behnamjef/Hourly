@@ -553,8 +553,6 @@ MonoBehaviour:
     shown: 0
   - name: ToDoTaskCell
     shown: 0
-  - name: NotificationManager
-    shown: 0
   - name: CalendarDayCell
     shown: 0
   - name: DateSelector

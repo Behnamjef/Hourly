@@ -78,6 +78,7 @@ namespace Hourly
         {
             // Remove task
             TaskManager.RemoveTask(task.TaskIndex);
+            NotificationManager.CancelThisNotification(task.TaskIndex);
         }
 
         public async void ShowAllGroupsPopup()
@@ -129,7 +130,7 @@ namespace Hourly
             if (Prefs.UserProfile.AllToDoTasks.IsNullOrEmpty())
                 return;
 
-            NotificationManager.Instance.SetupNotifications(Prefs.UserProfile.AllToDoTasks.ToArray());
+            NotificationManager.SetupNotifications(Prefs.UserProfile.AllToDoTasks.ToArray());
         }
     }
 }

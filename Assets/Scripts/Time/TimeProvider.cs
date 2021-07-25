@@ -10,7 +10,7 @@ namespace Hourly.Time
         
         public static DateTime GetCurrentTime()
         {
-            return DateTime.Now;
+            return DateTime.Now.AddSeconds(-DateTime.Now.Second);
         }
 
         public static string GetDateFriendlyName(DateTime dateTime)
